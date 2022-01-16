@@ -17,7 +17,7 @@
   transition: 0.3s ease-in-out;
 }
 
-.card__like:disabled {
+.card__like:focus {
   background-image: url(../../../images/сердце_активное.svg);
   transition: 0.5s ease-in-out;
 }
