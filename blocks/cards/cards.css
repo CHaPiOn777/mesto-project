@@ -1,0 +1,16 @@
+.cards {
+  margin: auto;
+  padding-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 880px;
+  gap: 17px;
+}
+
+@media screen and (max-width: 767px) {
+  .cards {
+    margin: auto;
+    padding: 0;
+    gap: 20px;
+  }
+}

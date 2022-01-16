@@ -1,0 +1,31 @@
+.card__like {
+  background-image: url(../../../images/Лайк.svg);
+  background-repeat: no-repeat;
+  padding-right: 5px;
+  width: 22px;
+  height: 19px;
+}
+
+
+.card__like:hover {
+  opacity: 0.5;
+  transition: 0.5s ease-in-out;
+}
+
+.card__like:not(hover) {
+  opacity: 1;
+  transition: 0.3s ease-in-out;
+}
+
+.card__like:disabled {
+  background-image: url(../../../images/сердце_активное.svg);
+  transition: 0.5s ease-in-out;
+}
+
+
+@media screen and (max-width: 767px) {
+  .card__like {
+    width: 22px;
+    height: 19px;
+  }
+}

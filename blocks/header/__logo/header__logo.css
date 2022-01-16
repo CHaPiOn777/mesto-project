@@ -1,0 +1,24 @@
+ .header__logo{
+  background-image: url(../../../images/Vector.svg);
+  background-size: cover;
+  height: 33px;
+  width: 142px;
+  margin: 48px auto 41px 0;
+}
+
+.header__logo:hover {
+  opacity: 0.8;
+  transition: 0.5s ease-in-out;
+}
+
+.header__logo:not(hover) {
+  opacity: 1;
+  transition: 0.3s ease-in-out;
+}
+
+@media screen and (max-width: 767px) {
+  .header__logo {
+    width: 105px;
+    margin: 28px auto 31px 27px;
+  }
+}
