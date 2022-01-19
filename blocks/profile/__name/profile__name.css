@@ -2,7 +2,7 @@
   display: grid;
   grid-template-areas: 
   "title but"
-  "subtitle .";
+  "subtitle subtitle";
   align-items: baseline;
   margin-left: 30px;
 }

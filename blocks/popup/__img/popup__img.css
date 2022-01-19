@@ -11,6 +11,7 @@
   margin: -205px 223px;
   width: 32px;
   height: 32px;
+  cursor: pointer;
 }
 
 .popup__img:hover {

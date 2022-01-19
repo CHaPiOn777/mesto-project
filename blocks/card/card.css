@@ -1,19 +1,8 @@
 .card {
+  margin: auto;
   background-color: #ffffff;
   min-width: 282px;
   border-radius: 10px;
   overflow: hidden;
   display: inline-block;
-}
-
-@media screen and (max-width: 1279px) {
-  .card {
-    margin: auto;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .card {
-    margin: auto;
-  }
 }
