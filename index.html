@@ -14,87 +14,87 @@
   <header class="header">
     <a href="##" class="header__logo"></a>
   </header>
-
-  <section class="profile">
-    <img src="./images/Жак.jpg" alt="Жак-Ив Кусто" class="profile__avatar">
-    <div class="profile__name">
-      <h1 class="profile__title">Жак-Ив Кусто</h1>
-      <a href="##" class="profile__edit-button"></a>
-      <!-- <div class="popup popup_opened">
-        <form class="popup__container">
-          <img src="./images/Close Icon.svg" alt="Закрыть окно" class="popup__img">
-          <h1 class="popup__header">Редактировать профиль</h1>
-          <fieldset class="popup__item">
-            <input class="popup__text" type="text" name="name" value="Жак-Ив Кусто">
-          </fieldset>
-          <fieldset class="popup__item">
-            <input class="popup__text" type="text" name="subtitle" value="Исследователь океана">
-          </fieldset>
-          <fieldset class="popup__item">
-            <button class="popup__text-button" type="submit">Сохранить</button>
-          </fieldset>
-        </form>
-      </div> -->
-      <p class="profile__subtitle">
-        Исследователь океана
-      </p>
-    </div>
-    <img src="./images/Крестик.svg" alt="Кнопка добавить" class="profile__add-button">
-  </section>
-
-  <section class="cards">
-    <div class="card">
-      <img src="./images/Карачаевск.jpg" alt="Карачаевск" class="card__img">
-      <div class="card__name-city">
-        <h2 class="card__title">Карачаевск</h2>
-        <a href="##" class="card__like"></a>
+  <main>
+    <section class="profile">
+      <img src="./images/Жак.jpg" alt="Жак-Ив Кусто" class="profile__avatar">
+      <div class="profile__name">
+        <h1 class="profile__title">Жак-Ив Кусто</h1>
+        <button class="profile__edit-button" type="button"></button>
+        <p class="profile__subtitle">
+          Исследователь океана
+        </p>
       </div>
-    </div>
+      <img src="./images/Крестик.svg" alt="Кнопка добавить" class="profile__add-button">
+    </section>
 
-    <div class="card">
-      <img src="./images/Гора-Эльбрус.jpg" alt="Гора Эльбрус" class="card__img">
-      <div class="card__name-city">
-        <h2 class="card__title">Гора Эльбрус</h2>
-        <a href="##" class="card__like"></a>
+    <section class="cards">
+      <div class="card">
+        <img src="./images/Карачаевск.jpg" alt="Карачаевск" class="card__img">
+        <div class="card__name-city">
+          <h2 class="card__title">Карачаевск</h2>
+          <a href="##" class="card__like"></a>
+        </div>
       </div>
-    </div>
 
-    <div class="card">
-      <img src="./images/Домбай.jpg" alt="Домбай" class="card__img">
-      <div class="card__name-city">
-        <h2 class="card__title">Домбай</h2>
-        <a href="##" class="card__like"></a>
+      <div class="card">
+        <img src="./images/Гора-Эльбрус.jpg" alt="Гора Эльбрус" class="card__img">
+        <div class="card__name-city">
+          <h2 class="card__title">Гора Эльбрус</h2>
+          <a href="##" class="card__like"></a>
+        </div>
       </div>
-    </div>
 
-    <div class="card">
-      <img src="./images/Гора-Эльбрус.jpg" alt="Гора Эльбрус" class="card__img">
-      <div class="card__name-city">
-        <h2 class="card__title">Гора Эльбрус</h2>
-        <a href="##" class="card__like"></a>
+      <div class="card">
+        <img src="./images/Домбай.jpg" alt="Домбай" class="card__img">
+        <div class="card__name-city">
+          <h2 class="card__title">Домбай</h2>
+          <a href="##" class="card__like"></a>
+        </div>
       </div>
-    </div>
 
-    <div class="card">
-      <img src="./images/Домбай.jpg" alt="Домбай" class="card__img">
-      <div class="card__name-city">
-        <h2 class="card__title">Домбай</h2>
-        <a href="##" class="card__like"></a>
+      <div class="card">
+        <img src="./images/Гора-Эльбрус.jpg" alt="Гора Эльбрус" class="card__img">
+        <div class="card__name-city">
+          <h2 class="card__title">Гора Эльбрус</h2>
+          <a href="##" class="card__like"></a>
+        </div>
       </div>
-    </div>
 
-    <div class="card">
-      <img src="./images/Карачаевск.jpg" alt="Карачаевск" class="card__img">
-      <div class="card__name-city">
-        <h2 class="card__title">Карачаево-Чепецк</h2>
-        <a href="##" class="card__like"></a>
+      <div class="card">
+        <img src="./images/Домбай.jpg" alt="Домбай" class="card__img">
+        <div class="card__name-city">
+          <h2 class="card__title">Домбай</h2>
+          <a href="##" class="card__like"></a>
+        </div>
       </div>
-    </div>
-  </section>
+
+      <div class="card">
+        <img src="./images/Карачаевск.jpg" alt="Карачаевск" class="card__img">
+        <div class="card__name-city">
+          <h2 class="card__title">Карачаево-Чепецк</h2>
+          <a href="##" class="card__like"></a>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer class="footer">
     <p class="footer__paragraph">© 2022 Mesto Russia</p>
   </footer>
+
+  <div class="popup popup_opened">
+    <div class="popup__container">
+      <form name="popup">
+        <button class="popup__img"" type="button"></button>
+        <h2 class="popup__header">Редактировать профиль</h2>
+        <fieldset class="popup__item">
+          <input class="popup__text" type="text" name="name" value="Жак-Ив Кусто">
+          <input class="popup__text" type="text" name="subtitle" value="Исследователь океана">
+          <button class="popup__text-button" type="submit">Сохранить</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
 
 </body>
 
