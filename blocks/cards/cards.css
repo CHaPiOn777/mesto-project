@@ -1,9 +1,10 @@
 .cards {
   padding: 0;
   margin: auto;
+  padding: 0 5px;
   padding-top: 40px;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(282px, 1fr));
   max-width: 880px;
   gap: 17px;
 }
