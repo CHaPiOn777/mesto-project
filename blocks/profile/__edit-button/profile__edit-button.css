@@ -10,6 +10,7 @@
   height: 24px;
   grid-area: but;
   margin-left: 18px;
+  margin-top: 5px;
   cursor: pointer;
   transition: opacity 0.5s ease-in-out;
 }

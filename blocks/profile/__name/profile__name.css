@@ -1,9 +1,9 @@
 .profile__name {
-  display: grid;
+  display: inline-grid;
   grid-template-areas: 
   "title but"
   "subtitle subtitle";
-  align-items: baseline;
+  align-items: center;
   margin-left: 30px;
 }
 
@@ -12,6 +12,5 @@
     margin: 0;
     margin-top: 23px;
     text-align: center;
-    align-items: center;
   }
 }
