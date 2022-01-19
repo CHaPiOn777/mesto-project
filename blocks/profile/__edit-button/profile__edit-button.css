@@ -12,6 +12,7 @@
   grid-area: but;
   margin-left: 18px;
   cursor: pointer;
+  transition: opacity 0.5s ease-in-out;
 }
 
 @media screen and (max-width: 767px) {
@@ -24,10 +25,4 @@
 
 .profile__edit-button:hover {
   opacity: 0.6;
-  transition: 0.5s ease-in-out;
-}
-
-.profile__edit-button:not(hover) {
-  opacity: 1;
-  transition: 0.3s ease-in-out;
 }

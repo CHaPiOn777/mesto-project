@@ -11,23 +11,18 @@
   border: none;
   border-radius: 2px;
   margin-top: 48px;
-  margin-bottom: 37px;
   cursor: pointer;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .popup__text-button:hover {
   opacity: 0.8;
-  transition: 0.5s ease-in-out;
-}
-
-.popup__text-button:not(hover) {
-  opacity: 1;
-  transition: 0.3s ease-in-out;
 }
 
 @media screen and (max-width: 767px) {
   .popup__text-button {
     font-size: 14px;
     line-height: 17px;
+    margin-top: 45px;
   }
 }

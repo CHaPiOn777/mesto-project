@@ -6,16 +6,11 @@
   width: 142px;
   margin: 48px auto 41px 0;
   cursor: pointer;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .header__logo:hover {
   opacity: 0.8;
-  transition: 0.5s ease-in-out;
-}
-
-.header__logo:not(hover) {
-  opacity: 1;
-  transition: 0.3s ease-in-out;
 }
 
 @media screen and (max-width: 767px) {

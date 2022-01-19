@@ -6,17 +6,12 @@
   width: 24px;
   height: 19px;
   cursor: pointer;
+  transition: opacity 0.5s ease-in-out;
 }
 
 
 .card__like:hover {
   opacity: 0.5;
-  transition: 0.5s ease-in-out;
-}
-
-.card__like:not(hover) {
-  opacity: 1;
-  transition: 0.3s ease-in-out;
 }
 
 .card__like:focus {

@@ -2,18 +2,18 @@
   margin: 0;
   padding: 0;
   margin: auto;
-  margin: 54px 36px 0 36px;
+  margin: 54px 36px 37px 36px;
   border: none;
 }
 
 @media screen and (max-width: 767px) {
   .popup__item {
-  margin: 30px 22px 0 22px;
+  margin: 30px 22px 25px 22px;
   }
   .popup__item:nth-of-type(3) {
-    margin: 45px 22px 0 22px;
+    margin-top: 45px;
   }
   .popup__item:nth-of-type(1) {
-    margin-top: 75px;
+    margin-top: 75px; 
   }
 }
