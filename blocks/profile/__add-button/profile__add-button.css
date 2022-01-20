@@ -1,10 +1,7 @@
 .profile__add-button {
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(0, 0, 0, .0);
   width: 150px;
   height: 50px;
   border: 2px solid #FFFFFF;
@@ -24,8 +21,6 @@
     padding: 17px 132px;
     margin: 36px 0;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     width: 282px;
   }
 }

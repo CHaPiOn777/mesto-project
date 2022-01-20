@@ -3,7 +3,7 @@
   background-image: url(../../../images/Close_Icon.svg);
   background-size: cover;
   background-repeat: no-repeat;
-  background-color: rgba(0, 0, 0);
+  background-color: rgba(0, 0, 0, .0);
   border: none;
   top: -40px;
   right: -40px;

@@ -12,5 +12,6 @@
 @media screen and (max-width: 767px) {
   .cards {
     gap: 20px;
+    padding-top: 0;
   }
 }

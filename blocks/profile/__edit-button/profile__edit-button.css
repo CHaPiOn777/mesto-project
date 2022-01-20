@@ -5,7 +5,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   border: none;
-  background-color: rgba(0, 0, 0);
+  background-color: rgba(0, 0, 0, .0);
   width: 24px;
   height: 24px;
   grid-area: but;
