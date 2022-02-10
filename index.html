@@ -26,54 +26,7 @@
     </section>
 
     <section class="cards">
-      <div class="card">
-        <img src="./images/Карачаевск.jpg" alt="Карачаевск" class="card__img">
-        <div class="card__name-city">
-          <h2 class="card__title">Карачаевск</h2>
-          <button class="card__like" type="button" aria-label="Кнопка поставить лайк"></button>
-
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="./images/Гора-Эльбрус.jpg" alt="Гора Эльбрус" class="card__img">
-        <div class="card__name-city">
-          <h2 class="card__title">Гора Эльбрус</h2>
-          <button class="card__like" type="button" aria-label="Кнопка поставить лайк"></button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="./images/Домбай.jpg" alt="Домбай" class="card__img">
-        <div class="card__name-city">
-          <h2 class="card__title">Домбай</h2>
-          <button class="card__like" type="button" aria-label="Кнопка поставить лайк"></button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="./images/Гора-Эльбрус.jpg" alt="Гора Эльбрус" class="card__img">
-        <div class="card__name-city">
-          <h2 class="card__title">Гора Эльбрус</h2>
-          <button class="card__like" type="button" aria-label="Кнопка поставить лайк"></button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="./images/Домбай.jpg" alt="Домбай" class="card__img">
-        <div class="card__name-city">
-          <h2 class="card__title">Домбай</h2>
-          <button class="card__like" type="button" aria-label="Кнопка поставить лайк"></button>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="./images/Карачаевск.jpg" alt="Карачаевск" class="card__img">
-        <div class="card__name-city">
-          <h2 class="card__title">Карачаево-Чепецк</h2>
-          <button class="card__like" type="button" aria-label="Кнопка поставить лайк"></button>
-        </div>
-      </div>
+      
     </section>
   </main>
 
@@ -87,14 +40,29 @@
       <form name="popup">
         <h2 class="popup__header">Редактировать профиль</h2>
         <fieldset class="popup__item">
-          <input class="popup__text" required placeholder="Жак-Ив Кусто" type="text" name="name">
-          <input class="popup__text" required placeholder="Исследователь океана" type="text" name="subtitle">
+          <input class="popup__text" required value="Жак-Ив Кусто" type="text" name="name" id="name">
+          <input class="popup__text" required value="Исследователь океана" type="text" name="subtitle"  id="subtitle">
           <button class="popup__text-button" type="button" aria-label="Кнопка сохранить">Сохранить</button>
         </fieldset>
       </form>
     </div>
   </div>
 
+  <div class="popup" id="popup_add_card">
+    <div class="popup__container">
+      <button class="popup__img" id="button_add_close" type="button" aria-label="Кнопка закрыть попап"></button>
+      <form name="popup">
+        <h2 class="popup__header">Новое место</h2>
+        <fieldset class="popup__item">
+          <input class="popup__text" required placeholder="Название" type="text" name="name" id="name">
+          <input class="popup__text" required placeholder="Ссылка на картинку" type="text" name="subtitle"  id="subtitle">
+          <button class="popup__text-button" type="button" aria-label="Кнопка сохранить" id="button_new">Создать</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
 </body>
 
 </html>
