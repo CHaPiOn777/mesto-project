@@ -7,6 +7,7 @@
 @import url(../blocks/card/card.css);
 @import url(../blocks/card/__img/card__img.css);
 @import url(../blocks/card/__like/card__like.css);
+@import url(../blocks/card/__like/_active/card__like_active.css);
 @import url(../blocks/card/__name-city/card__name-city.css);
 @import url(../blocks/card/__title/card__title.css);
 @import url(../blocks/profile/profile.css);

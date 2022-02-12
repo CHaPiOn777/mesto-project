@@ -13,8 +13,3 @@
 .card__like:hover {
   opacity: 0.5;
 }
-
-.card__like:focus {
-  background-image: url(../../../images/сердце_активное.svg);
-  transition: 0.5s ease-in-out;
-}
