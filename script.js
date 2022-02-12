@@ -1,17 +1,18 @@
-let button_edit = document.querySelector('.profile__edit-button');/*кнопка редкатирования профиля*/
-let popup_profile = document.querySelector('.popup');/*блок формы редктирования профиля*/
-let button_edit_close = document.querySelector('.popup__img');/*кнопка закрытия профиля*/
-let profile_name = document.querySelector('.profile__title');/*имя профиля*/
-let description_profile = document.querySelector('.profile__subtitle');/*описание профиля*/
-let button_save = document.querySelector('.popup__text-button');/*кнопка сохранить*/
-let name_title = document.querySelector('#name');/*имя в форме*/
-let subtitle = document.querySelector('#subtitle');/*описание в форме*/
-let card = document.querySelector('.cards');/*карточки*/
-let button_add = document.querySelector('.profile__add-button');/*кнопка добавить*/
-let popup_card = document.querySelector('#popup_add_card');/*попап добавления карточек*/
-let button_new = document.querySelector('#button_new');/*кнопка добавить в карточке*/
-let button_add_close = document.querySelector('#button_add_close');/*кнопка закрытия попапа карточек*/
+const popupProfile_buttonEdit = document.querySelector('.profile__edit-button');/*кнопка редкатирования профиля*/
+const popupProfile = document.querySelector('.popup');/*блок формы редктирования профиля*/
+const popupProfile_buttonEditClose = document.querySelector('.popup__img');/*кнопка закрытия профиля*/
+const profile_name = document.querySelector('.profile__title');/*имя профиля*/
+const profile_description = document.querySelector('.profile__subtitle');/*описание профиля*/
+const popupProfile_buttonSave = document.querySelector('.popup__text-button');/*кнопка сохранить*/
 
+const popupCard_nameTitle = document.querySelector('#name_card');/*имя в форме*/
+const popupCard_description = document.querySelector('#subtitle_card');/*описание в форме*/
+
+const cards = document.querySelector('.cards');/*карточки*/
+const popupCard_buttonAdd = document.querySelector('.profile__add-button');/*кнопка добавить попап карточки*/
+const popupCard = document.querySelector('#popup_add_card');/*попап добавления карточек*/
+const popupCard_buttonNew = document.querySelector('#button_new');/*кнопка добавить в карточке*/
+const popupCard_buttonAddClose = document.querySelector('#button_add_close');/*кнопка закрытия попапа карточек*/
 
 const initialCards = [
   {
@@ -42,34 +43,60 @@ const initialCards = [
 
 
 
-function buttonClick(button, name_popup) /*функция открывает форму при нажатии на кнопку*/ {
+function buttonClick(button, namePopup) /*функция открывает форму при нажатии на кнопку*/ {
   button.addEventListener('click', function() {
-    name_popup.classList.toggle('popup_opened');
+    namePopup.classList.toggle('popup_opened');
+    if (button === popupProfile_buttonEditClose) {
+      popupProfile_nameTitle.value = profile_name.textContent;
+      popupProfile_description.value = profile_description.textContent;
+    }
   });
 }
 
 
 function Inner()/*ф-ия изменения имени и описания*/ {
-  profile_name.innerHTML = `${name_title.value}`;
-  description_profile.innerHTML = `${subtitle.value}`;
-  popup_profile.classList.toggle('popup_opened');
+  profile_name.textContent = popupProfile_nameTitle.value;
+  profile_description.textContent = popupProfile_description.value;
+  popupProfile.classList.toggle('popup_opened');
 }
 
-buttonClick(button_edit, popup_profile);
-buttonClick(button_edit_close, popup_profile);
-buttonClick(button_add, popup_card);
-buttonClick(button_add_close, popup_card);
+function newCard (name, link) /* функция создания карточки */ {
+  const card = document.createElement('div');
+  card.classList.add('card');
 
-button_save.addEventListener('click', Inner);
+  const cardImg = document.createElement('img');
+  cardImg.classList.add('card__img');
+  cardImg.setAttribute('src', link);
 
-for (let i = 0; i < initialCards.length; i++) {
-  card.insertAdjacentHTML('afterbegin', `
-  <div class="card">
-    <img src="${initialCards[i]['link']}" alt="${initialCards[i]['name']}" class="card__img">
-    <div class="card__name-city">
-      <h2 class="card__title">${initialCards[i]['name']}</h2>
-      <button class="card__like" type="button" aria-label="Кнопка поставить лайк"></button>
-    </div>
-  </div>
-`);
+  const cardNameCity = document.createElement('div');
+  cardNameCity.classList.add('card__name-city');
+
+  const cardTitle = document.createElement('h2');
+  cardTitle.classList.add('card__title');
+  cardTitle.textContent = name;
+
+  const cardLike = document.createElement('button');
+  cardLike.classList.add('card__like');
+  cardImg.setAttribute('aria-label', 'Кнопка поставить лайк');
+
+  cardNameCity.append(cardTitle, cardLike);
+  card.append(cardImg, cardNameCity);
+  cards.prepend(card);
+}
+
+buttonClick(popupProfile_buttonEdit, popupProfile);
+buttonClick(popupProfile_buttonEditClose, popupProfile);
+buttonClick(popupCard_buttonAdd, popupCard);
+buttonClick(popupCard_buttonAddClose, popupCard);
+
+popupProfile_buttonSave.addEventListener('click', Inner);
+popupCard_buttonNew.addEventListener('click', function() {
+  newCard(popupCard_nameTitle.value, popupCard_description.value);
+  popupCard_nameTitle.value = '';
+  popupCard_description.value = '';
+  popupCard.classList.toggle('popup_opened');
+});
+
+for (let i = 0; i < initialCards.length; i++)/* цикл загружает 6 карточек */ { 
+  newCard(initialCards[i]['name'], initialCards[i]['link']);
 }
