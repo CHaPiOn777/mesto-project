@@ -76,6 +76,7 @@ function newCard (name, link) /* функция создания карточк�
 
   const cardImg = document.createElement('img');
   cardImg.classList.add('card__img');
+  cardImg.setAttribute('alt', name);
   cardImg.setAttribute('src', link);
 
   const cardNameCity = document.createElement('div');
@@ -89,11 +90,18 @@ function newCard (name, link) /* функция создания карточк�
   cardLike.classList.add('card__like');
   cardImg.setAttribute('aria-label', 'Кнопка поставить лайк');
 
+  const deleteCard = document.createElement('button');
+  deleteCard.classList.add('card__delete');
+  deleteCard.setAttribute('aria-label', 'Удалить карточку');
+
   cardNameCity.append(cardTitle, cardLike);
-  card.append(cardImg, cardNameCity);
+  card.append(deleteCard, cardImg, cardNameCity);
   cards.prepend(card);
-  
+
   buttonClick(cardLike, cardLike, 'card__like_active');
+  deleteCard.addEventListener('click', function() {
+    card.remove();
+  });
 }
 
 buttonClick(popupProfile_buttonEdit, popupProfile, 'popup_opened');
