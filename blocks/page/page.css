@@ -6,6 +6,7 @@
   padding: 0 19px 0 19px;
   margin: auto;
   z-index: 1;
+  position: relative;
 }
 
 @media screen and (max-width: 767px) {
