@@ -7,17 +7,22 @@ const profile_name = document.querySelector('.profile__title');/*имя проф
 const profile_description = document.querySelector('.profile__subtitle');/*описание профиля*/
 const popupProfile_buttonSave = document.querySelector('.popup__text-button');/*кнопка сохранить*/
 
-const popupProfile_nameTitle = document.querySelector('#name');/*имя в форме*/
-const popupProfile_description = document.querySelector('#subtitle');/*описание в форме*/
+const popupProfile_nameTitle = document.querySelector('#name');/*имя в форме профайла*/
+const popupProfile_description = document.querySelector('#subtitle');/*описание в форме профайла*/
 
-const popupCard_nameTitle = document.querySelector('#name_card');/*имя в форме*/
-const popupCard_description = document.querySelector('#subtitle_card');/*описание в форме*/
+const popupCard_nameTitle = document.querySelector('#name_card');/*имя в форме карточки*/
+const popupCard_description = document.querySelector('#subtitle_card');/*описание в форме карточки*/
 
 const cards = document.querySelector('.cards');/*карточки*/
 const popupCard_buttonAdd = document.querySelector('.profile__add-button');/*кнопка добавить попап карточки*/
 const popupCard = document.querySelector('#popup_add_card');/*попап добавления карточек*/
 const popupCard_buttonNew = document.querySelector('#button_new');/*кнопка добавить в карточке*/
 const popupCard_buttonAddClose = document.querySelector('#button_add_close');/*кнопка закрытия попапа карточек*/
+
+const img = document.querySelector('.card-img');//блок с расширенной картинкой
+const elementImg = document.querySelector('.card-img__image');//место ссылки картинки
+const elementName = document.querySelector('.card-img__subtitle');//место имени картинки
+const closeBtn = document.querySelector('.card-img__button');//кнопка закрытия картинки
 
 const like = document.querySelector('.card__like');//Лайк в карточке
 
@@ -88,32 +93,31 @@ function newCard (name, link) {
 
   cards.prepend(cardElement);
   
-
+  //ставит лайк
   cardElement.querySelector('.card__like').addEventListener('click', function(evt) {
     evt.target.classList.toggle('card__like_active');
   })
+  // удаляет карточку
   cardElement.querySelector('.card__delete').addEventListener('click', function() {
     cardElement.remove();
   })
+
+  // При нажатии на картинку в карточке открывает ее полное изображение
   cardElement.querySelector('.card__img').addEventListener('click', function() {
-    openImg(name, link)
+    img.classList.add('card-img_opened');
+    addImg(name, link)
+  })
+  //кнопка закрытия окна с картинкой
+  closeBtn.addEventListener('click', function() {
+    img.classList.remove('card-img_opened');
   })
 }
+//функция добавляет адрес ссылки картинки и название в расширенную картинку
+function addImg(name, link) {
+  elementImg.setAttribute('alt', name);
+  elementImg.setAttribute('src', link);
 
-// функция создает развернутую картинку карточки
-function openImg(name, link) {
-  const imgTemplate = document.querySelector('#img-template').content;
-  const imgElement = imgTemplate.querySelector('.card-img').cloneNode(true);
-
-  imgElement.querySelector('.card-img__image').setAttribute('src', link);
-  imgElement.querySelector('.card-img__image').setAttribute('alt', name);
-  imgElement.querySelector('.card-img__subtitle').textContent = name;
-
-  page.append(imgElement);
-
-  imgElement.querySelector('.card-img__button').addEventListener('click', function() {
-    imgElement.remove();
-  })
+  elementName.textContent = name
 }
 
 // ****************************************
@@ -131,10 +135,11 @@ popupCard_buttonNew.addEventListener('click', function() {
 buttonClick(popupProfile_buttonEdit, popupProfile, 'popup_opened');
 buttonClick(popupProfile_buttonEditClose, popupProfile, 'popup_opened');
 
+popupProfile_buttonSave.addEventListener('click', Inner);
+
 buttonClick(popupCard_buttonAdd, popupCard, 'popup_opened');
 buttonClick(popupCard_buttonAddClose, popupCard, 'popup_opened');
 
-popupProfile_buttonSave.addEventListener('click', Inner);
 
 /* цикл загружает 6 карточек */
 initialCards.forEach(function (item) {
