@@ -2,7 +2,7 @@ const page = document.querySelector('.page');
 
 const popupProfile_buttonEdit = document.querySelector('.profile__edit-button');/*кнопка редкатирования профиля*/
 const popupProfile = document.querySelector('.popup');/*блок формы редктирования профиля*/
-const popupProfile_buttonEditClose = document.querySelector('.popup__img');/*кнопка закрытия профиля*/
+const buttonEditClose = document.querySelector('.popup__img');/*кнопка закрытия попа*/
 const profile_name = document.querySelector('.profile__title');/*имя профиля*/
 const profile_description = document.querySelector('.profile__subtitle');/*описание профиля*/
 const popupProfile_buttonSave = document.querySelector('.popup__text-button');/*кнопка сохранить*/
@@ -17,12 +17,12 @@ const cards = document.querySelector('.cards');/*карточки*/
 const popupCard_buttonAdd = document.querySelector('.profile__add-button');/*кнопка добавить попап карточки*/
 const popupCard = document.querySelector('#popup_add_card');/*попап добавления карточек*/
 const popupCard_buttonNew = document.querySelector('#button_new');/*кнопка добавить в карточке*/
-const popupCard_buttonAddClose = document.querySelector('#button_add_close');/*кнопка закрытия попапа карточек*/
+const buttonAddClose = document.querySelector('#popup__img');/*кнопка закрытия попапа карточек*/
 
 const img = document.querySelector('.card-img');//блок с расширенной картинкой
 const elementImg = document.querySelector('.card-img__image');//место ссылки картинки
 const elementName = document.querySelector('.card-img__subtitle');//место имени картинки
-const closeBtn = document.querySelector('.card-img__button');//кнопка закрытия картинки
+const closeBtn = document.querySelector('#close-img');//кнопка закрытия картинки
 
 const like = document.querySelector('.card__like');//Лайк в карточке
 
@@ -57,20 +57,12 @@ const initialCards = [
 // Функции
 // ************
 
- /*функция открывает форму при нажатии на кнопку*/
-function buttonClick(button, namePopup, add) {
-  button.addEventListener('click', function() {
-    namePopup.classList.toggle(add);
-     /* условие: если попап закрыли без сохранения то значения 
-     в попапе должны быть как в заголовке */
-    if (button === popupProfile_buttonEditClose) {
-      popupProfile_nameTitle.value = profile_name.textContent;
-      popupProfile_description.value = profile_description.textContent;
-    } else if (button === popupCard_buttonAddClose) {
-      popupCard_nameTitle.value = '';
-      popupCard_description.value = '';
-    }
-  });
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+}
+
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
 }
 
 /*ф-ия изменения имени и описания*/
@@ -104,12 +96,12 @@ function newCard (name, link) {
 
   // При нажатии на картинку в карточке открывает ее полное изображение
   cardElement.querySelector('.card__img').addEventListener('click', function() {
-    img.classList.add('card-img_opened');
+    openPopup(img);
     addImg(name, link)
   })
   //кнопка закрытия окна с картинкой
   closeBtn.addEventListener('click', function() {
-    img.classList.remove('card-img_opened');
+    closePopup(img);
   })
 }
 //функция добавляет адрес ссылки картинки и название в расширенную картинку
@@ -132,14 +124,27 @@ popupCard_buttonNew.addEventListener('click', function() {
   popupCard.classList.toggle('popup_opened');
 });
 
-buttonClick(popupProfile_buttonEdit, popupProfile, 'popup_opened');
-buttonClick(popupProfile_buttonEditClose, popupProfile, 'popup_opened');
+popupProfile_buttonEdit.addEventListener('click', function() {
+  openPopup(popupProfile);
+})
+
+buttonEditClose.addEventListener('click', function() {
+  closePopup(popupProfile);
+  popupProfile_nameTitle.value = profile_name.textContent;
+  popupProfile_description.value = profile_description.textContent;
+})
+
+popupCard_buttonAdd.addEventListener('click', function() {
+  openPopup(popupCard);
+})
+
+buttonAddClose.addEventListener('click', function() {
+  closePopup(popupCard);
+  popupCard_nameTitle.value = '';
+  popupCard_description.value = '';
+})
 
 popupProfile_buttonSave.addEventListener('click', Inner);
-
-buttonClick(popupCard_buttonAdd, popupCard, 'popup_opened');
-buttonClick(popupCard_buttonAddClose, popupCard, 'popup_opened');
-
 
 /* цикл загружает 6 карточек */
 initialCards.forEach(function (item) {
