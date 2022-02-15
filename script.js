@@ -1,30 +1,29 @@
 const page = document.querySelector('.page');
 
 const popupProfile_buttonEdit = document.querySelector('.profile__edit-button');/*кнопка редкатирования профиля*/
-const popupProfile = document.querySelector('.popup');/*блок формы редктирования профиля*/
-const buttonEditClose = document.querySelector('.popup__img');/*кнопка закрытия попа*/
-const profile_name = document.querySelector('.profile__title');/*имя профиля*/
-const profile_description = document.querySelector('.profile__subtitle');/*описание профиля*/
-const popupProfile_buttonSave = document.querySelector('.popup__text-button');/*кнопка сохранить*/
+const popupAdd = document.querySelectorAll('.popup');/*блок формы редктирования профиля*/
+const buttonClose = document.querySelectorAll('.popup__img');/*кнопка закрытия попа*/
+const profileName = document.querySelector('.profile__title');/*имя профиля*/
+const profileDescription = document.querySelector('.profile__subtitle');/*описание профиля*/
+const popupProfileButtonSave = document.querySelector('.popup__text-button');/*кнопка сохранить*/
 
-const popupProfile_nameTitle = document.querySelector('#name');/*имя в форме профайла*/
-const popupProfile_description = document.querySelector('#subtitle');/*описание в форме профайла*/
+const popupProfileNameTitle = document.querySelector('#name');/*имя в форме профайла*/
+const popupProfileDescription = document.querySelector('#subtitle');/*описание в форме профайла*/
 
-const popupCard_nameTitle = document.querySelector('#name_card');/*имя в форме карточки*/
-const popupCard_description = document.querySelector('#subtitle_card');/*описание в форме карточки*/
+const popupCardNameTitle = document.querySelector('#name_card');/*имя в форме карточки*/
+const popupCardDescription = document.querySelector('#subtitle_card');/*описание в форме карточки*/
 
 const cards = document.querySelector('.cards');/*карточки*/
-const popupCard_buttonAdd = document.querySelector('.profile__add-button');/*кнопка добавить попап карточки*/
-const popupCard = document.querySelector('#popup_add_card');/*попап добавления карточек*/
-const popupCard_buttonNew = document.querySelector('#button_new');/*кнопка добавить в карточке*/
-const buttonAddClose = document.querySelector('#popup__img');/*кнопка закрытия попапа карточек*/
+const popupCardButtonAdd = document.querySelector('.profile__add-button');/*кнопка добавить попап карточки*/
+const popupCardButtonNew = document.querySelector('#button_new');/*кнопка добавить в карточке*/
 
-const img = document.querySelector('.card-img');//блок с расширенной картинкой
 const elementImg = document.querySelector('.card-img__image');//место ссылки картинки
 const elementName = document.querySelector('.card-img__subtitle');//место имени картинки
-const closeBtn = document.querySelector('#close-img');//кнопка закрытия картинки
 
 const like = document.querySelector('.card__like');//Лайк в карточке
+
+const cardTemplate = document.querySelector('#card-template').content;
+
 
 const initialCards = [
   {
@@ -66,15 +65,14 @@ function openPopup(popup) {
 }
 
 /*ф-ия изменения имени и описания*/
-function Inner() {
-  profile_name.textContent = popupProfile_nameTitle.value;
-  profile_description.textContent = popupProfile_description.value;
-  popupProfile.classList.toggle('popup_opened');
+function saveText() {
+  profileName.textContent = popupProfileNameTitle.value;
+  profileDescription.textContent = popupProfileDescription.value;
+  closePopup(popupAdd[0])
 }
 
 /* функция создания карточки */ 
 function newCard (name, link) {
-  const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   cardElement.querySelector('.card__img').setAttribute('alt', name);
   cardElement.querySelector('.card__img').setAttribute('src', link)
@@ -96,12 +94,8 @@ function newCard (name, link) {
 
   // При нажатии на картинку в карточке открывает ее полное изображение
   cardElement.querySelector('.card__img').addEventListener('click', function() {
-    openPopup(img);
+    openPopup(popupAdd[2]);
     addImg(name, link)
-  })
-  //кнопка закрытия окна с картинкой
-  closeBtn.addEventListener('click', function() {
-    closePopup(img);
   })
 }
 //функция добавляет адрес ссылки картинки и название в расширенную картинку
@@ -117,34 +111,38 @@ function addImg(name, link) {
 // ************
 
 // кнопка создает новую карточку при нажатии
-popupCard_buttonNew.addEventListener('click', function() {
-  newCard(popupCard_nameTitle.value, popupCard_description.value);
-  popupCard_nameTitle.value = '';
-  popupCard_description.value = '';
-  popupCard.classList.toggle('popup_opened');
+popupCardButtonNew.addEventListener('click', function() {
+  newCard(popupCardNameTitle.value, popupCardDescription.value);
+  popupCardNameTitle.value = '';
+  popupCardDescription.value = '';
+  closePopup(popupAdd[1])
 });
 
+//открывает попап профиля
 popupProfile_buttonEdit.addEventListener('click', function() {
-  openPopup(popupProfile);
+  openPopup(popupAdd[0]);
+  popupProfileNameTitle.value = profileName.textContent;
+  popupProfileDescription.value = profileDescription.textContent;
 })
 
-buttonEditClose.addEventListener('click', function() {
-  closePopup(popupProfile);
-  popupProfile_nameTitle.value = profile_name.textContent;
-  popupProfile_description.value = profile_description.textContent;
+//открывает попап карточек
+popupCardButtonAdd.addEventListener('click', function() {
+  openPopup(popupAdd[1]);
+  popupCardNameTitle.value = '';
+  popupCardDescription.value = '';
 })
 
-popupCard_buttonAdd.addEventListener('click', function() {
-  openPopup(popupCard);
+//кнопка закрытия
+buttonClose.forEach(function(del) {
+  del.addEventListener('click', function(){
+    popupAdd.forEach(function(pop) {
+      closePopup(pop)
+    })
+  })
 })
 
-buttonAddClose.addEventListener('click', function() {
-  closePopup(popupCard);
-  popupCard_nameTitle.value = '';
-  popupCard_description.value = '';
-})
-
-popupProfile_buttonSave.addEventListener('click', Inner);
+//сохраняет введенную карточку 
+popupProfileButtonSave.addEventListener('click', saveText);
 
 /* цикл загружает 6 карточек */
 initialCards.forEach(function (item) {
