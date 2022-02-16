@@ -1,7 +1,11 @@
 const page = document.querySelector('.page');
 
 const popupProfile_buttonEdit = document.querySelector('.profile__edit-button');/*кнопка редкатирования профиля*/
-const popupAdd = document.querySelectorAll('div.popup');/*блок формы редктирования профиля*/
+
+const popupCard = document.querySelector('.popup__card');/*блок формы редктирования профиля*/
+const popupProfile = document.querySelector('.popup__profile');/*блок формы редктирования карточки*/
+const popupImg = document.querySelector('.card-img');/*блок формы редктирования картинки*/
+
 const buttonClose = document.querySelectorAll('.popup__img');/*кнопка закрытия попа*/
 const profileName = document.querySelector('.profile__title');/*имя профиля*/
 const profileDescription = document.querySelector('.profile__subtitle');/*описание профиля*/
@@ -69,16 +73,16 @@ function saveText(evt) {
   evt.preventDefault();
   profileName.textContent = popupProfileNameTitle.value;
   profileDescription.textContent = popupProfileDescription.value;
-  closePopup(popupAdd[0])
+  closePopup(popupProfile)
 }
 
 //функция создания карточки
-function formSubmitHandler (evt) {
+function SubmitFormHandler (evt) {
   evt.preventDefault();
   cards.prepend(newCard(popupCardNameTitle.value, popupCardDescription.value));
   popupCardNameTitle.value = '';
   popupCardDescription.value = '';
-  closePopup(popupAdd[1])
+  closePopup(popupCard)
 }
 
 /* функция создания карточки */ 
@@ -102,7 +106,7 @@ function newCard (name, link) {
 
   // При нажатии на картинку в карточке открывает ее полное изображение
   cardElement.querySelector('.card__img').addEventListener('click', function() {
-    openPopup(popupAdd[2]);
+    openPopup(popupImg);
     addImg(name, link)
   })
   return cardElement
@@ -119,19 +123,19 @@ function addImg(name, link) {
 // Тело программы
 // ************
 
-popupCardButtonNew.addEventListener('submit', formSubmitHandler); 
+popupCardButtonNew.addEventListener('submit', SubmitFormHandler); 
 
 
 //открывает попап профиля
 popupProfile_buttonEdit.addEventListener('click', function() {
-  openPopup(popupAdd[0]);
+  openPopup(popupProfile);
   popupProfileNameTitle.value = profileName.textContent;
   popupProfileDescription.value = profileDescription.textContent;
 })
 
 //открывает попап карточек
 popupCardButtonAdd.addEventListener('click', function() {
-  openPopup(popupAdd[1]);
+  openPopup(popupCard);
   popupCardNameTitle.value = '';
   popupCardDescription.value = '';
 })
@@ -139,10 +143,10 @@ popupCardButtonAdd.addEventListener('click', function() {
 //кнопка закрытия
 buttonClose.forEach(function(del) {
   del.addEventListener('click', function(){
-    popupAdd.forEach(function(pop) {
-      closePopup(pop)
+      closePopup(popupCard);
+      closePopup(popupProfile);
+      closePopup(popupImg);
     })
-  })
 })
 
 //сохраняет введенные данные в попап профиля
