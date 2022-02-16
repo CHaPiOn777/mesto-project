@@ -6,7 +6,7 @@ const popupCard = document.querySelector('.popup__card');/*блок формы �
 const popupProfile = document.querySelector('.popup__profile');/*блок формы редктирования карточки*/
 const popupImg = document.querySelector('.card-img');/*блок формы редктирования картинки*/
 
-const buttonClose = document.querySelectorAll('.popup__img');/*кнопка закрытия попа*/
+const buttonsClose = document.querySelectorAll('.popup__img');/*кнопки закрытия попа*/
 const profileName = document.querySelector('.profile__title');/*имя профиля*/
 const profileDescription = document.querySelector('.profile__subtitle');/*описание профиля*/
 const popupProfileButtonSave = document.querySelector('#asdd');/*кнопка сохранить*/
@@ -77,7 +77,7 @@ function saveText(evt) {
 }
 
 //функция создания карточки
-function SubmitFormHandler (evt) {
+function submitFormHandler (evt) {
   evt.preventDefault();
   cards.prepend(newCard(popupCardNameTitle.value, popupCardDescription.value));
   popupCardNameTitle.value = '';
@@ -123,7 +123,7 @@ function addImg(name, link) {
 // Тело программы
 // ************
 
-popupCardButtonNew.addEventListener('submit', SubmitFormHandler); 
+popupCardButtonNew.addEventListener('submit', submitFormHandler); 
 
 
 //открывает попап профиля
@@ -141,7 +141,7 @@ popupCardButtonAdd.addEventListener('click', function() {
 })
 
 //кнопка закрытия
-buttonClose.forEach(function(del) {
+buttonsClose.forEach(function(del) {
   del.addEventListener('click', function(){
       closePopup(popupCard);
       closePopup(popupProfile);
