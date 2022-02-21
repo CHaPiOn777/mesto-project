@@ -19,7 +19,7 @@ const popupCardDescription = document.querySelector('#subtitle_card');/*опис
 
 const cards = document.querySelector('.cards');/*карточки*/
 const popupCardButtonAdd = document.querySelector('.profile__add-button');/*кнопка добавить попап карточки*/
-const popupCardButtonNew = document.querySelector('#asd');/*кнопка добавить в карточке*/
+const popupCardButtonNew = document.querySelector('#popup_form');/*кнопка добавить в карточке*/
 
 const elementImg = document.querySelector('.card-img__image');//место ссылки картинки
 const elementName = document.querySelector('.card-img__subtitle');//место имени картинки
