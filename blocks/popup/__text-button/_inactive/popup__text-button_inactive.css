@@ -1,0 +1,5 @@
+.popup__text-button_inactive {
+  background-color: rgba(255, 255, 255, 0);
+  border: 1px solid #C4C4C4;
+  color: #C4C4C4;
+}
