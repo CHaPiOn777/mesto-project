@@ -1,6 +1,6 @@
 .card-img__button {
   position: absolute;
-  background-image: url(../../../images/Close_Icon.svg);
+  background-image: url(../../../src/images/Close_Icon.svg);
   background-size: cover;
   background-repeat: no-repeat;
   background-color: rgba(0, 0, 0, .0);
