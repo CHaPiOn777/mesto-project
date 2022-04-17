@@ -1,6 +1,6 @@
 // функция создания карточки
 import {closePopup, openPopup} from './utils.js';
-import {saveText, addImg} from './modal.js';
+import {saveText, addImg, closeEscPopup} from './modal.js';
 
 export const popupImg = document.querySelector('.card-img');/*блок формы редктирования картинки*/
 export const cardTemplate = document.querySelector('#card-template').content;
@@ -42,6 +42,7 @@ export function newCard (name, link) {
   // При нажатии на картинку в карточке открывает ее полное изображение
   cardElement.querySelector('.card__img').addEventListener('click', function() {
     openPopup(popupImg);
+    closeEscPopup(popupImg);
     addImg(name, link)
   })
   return cardElement

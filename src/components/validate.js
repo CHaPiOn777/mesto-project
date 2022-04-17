@@ -6,6 +6,7 @@ export const enableObjectValidation = {
   inputErrorClass: 'popup__text_error',
   errorClass: 'popup__error_active'
 }; 
+
 const hasInvalidInput = (inputList) => {
   // проходим по этому массиву методом some
   return inputList.some((inputElement) => {
