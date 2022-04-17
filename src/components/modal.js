@@ -1,4 +1,5 @@
-import {openPopup, closeAllPopup} from './utils.js';
+import {openPopup, closeAllPopup, closePopup} from './utils.js';
+const page = document.querySelector('.page');
 export const elementImg = document.querySelector('.card-img__image');//место ссылки картинки
 export const elementName = document.querySelector('.card-img__subtitle');//место имени картинки
 export const popupProfile = document.querySelector('.popup__profile');/*блок формы редктирования карточки*/
@@ -7,10 +8,8 @@ export const profileDescription = document.querySelector('.profile__subtitle');/
 export const formProfile = document.forms.popupProfile;
 export const inputProfileName = formProfile.elements.name;
 export const inputProfileSubtitle = formProfile.elements.subtitle;
-export const popup = document.querySelectorAll('.popup');
+export const popups = document.querySelectorAll('.popup');
 
-
-import {closePopup} from './utils.js';
 
 export function saveText(evt) {
   evt.preventDefault();
@@ -28,11 +27,20 @@ export function addImg(name, link) {
 }
 
 export function closeOverlay() {
-  popup.forEach((item) => {
+  popups.forEach((item) => {
     item.addEventListener('click', (evt) => {
+      console.log(evt.target);
       if (evt.target.classList.contains('popup')) {
         closeAllPopup();
       }
     })
+  })
+}
+
+export function closeEscPopup (popup) {
+  page.addEventListener('keyup', (evt) => {
+    if (evt.key === 'Escape') {
+      closePopup(popup);
+    }
   })
 }
