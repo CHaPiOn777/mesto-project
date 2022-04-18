@@ -60,7 +60,7 @@
           <input class="popup__text" required placeholder="Ссылка на картинку" type="url" name="subtitle"
             id="subtitle">
           <span class="popup__error subtitle-error"></span>
-          <button class="popup__text-button" type="submit" aria-label="Кнопка сохранить"
+          <button class="popup__text-button popup__text-button-card" type="submit" aria-label="Кнопка сохранить"
             id="button_new">Создать</button>
         </fieldset>
       </form>
@@ -69,11 +69,11 @@
 
   <template id="card-template">
     <div class="card">
-      <button class="card__delete" aria-label=""></button>
+      <button class="card__delete" aria-label="Кнопка удалить карточку"></button>
       <img class="card__img" alt="" src="" aria-label="">
       <div class="card__name-city">
         <h2 class="card__title"></h2>
-        <button class="card__like"></button>
+        <button class="card__like" aria-label="Кнопка поставить лайк"></button>
       </div>
     </div>
   </template>

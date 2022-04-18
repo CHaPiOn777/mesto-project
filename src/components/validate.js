@@ -17,7 +17,7 @@ const hasInvalidInput = (inputList) => {
     return !inputElement.validity.valid;
   })
 }; 
-const toggleButtonState = (inputList, btn, options) => {
+export const toggleButtonState = (inputList, btn, options) => {
   // Если есть хотя бы один невалидный инпут
   if (hasInvalidInput(inputList)) {
     btn.disabled = true;
@@ -60,15 +60,13 @@ export function enableValidation(options) {
   });
 };
 
-function setEventListeners(inputElement, options) {
-  const inputList = Array.from(inputElement.querySelectorAll(options.inputSelector));
-  const btn = inputElement.querySelector(options.submitButtonSelector);
-  toggleButtonState(inputList, btn, options);
+function setEventListeners(form, options) {
+  const inputList = Array.from(form.querySelectorAll(options.inputSelector));
+  const btn = form.querySelector(options.submitButtonSelector);
   inputList.forEach((item) => {
     item.addEventListener('input', () => {
-      isValid(item, inputElement, options);
+      isValid(item, form, options);
       toggleButtonState(inputList, btn, options);
     })
-  }); 
-
+  });
 }

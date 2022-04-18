@@ -1,16 +1,17 @@
-import {popupImg, popupCard} from './card.js';
-import {popupProfile} from './modal.js';
+import {closeEscPopup} from './modal.js';
+import {enableObjectValidation, toggleButtonState} from './validate.js';
 
 export function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closeEscPopup); 
 }
 
 export function openPopup(popup) {
+  const inputList = Array.from(popup.querySelectorAll(enableObjectValidation.inputSelector));
+  const btn = popup.querySelector(enableObjectValidation.submitButtonSelector);
+  if(btn) {
+    toggleButtonState(inputList, btn, enableObjectValidation);
+  }
   popup.classList.add('popup_opened');
-}
-
-export function closeAllPopup() {
-  closePopup(popupCard);
-  closePopup(popupProfile);
-  closePopup(popupImg);
+  document.addEventListener('keydown', closeEscPopup);
 }
