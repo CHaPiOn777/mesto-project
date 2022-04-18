@@ -2,17 +2,15 @@ import '../style/index.css';
 
 import {
   openPopup,
-  closeAllPopup,
   closePopup
 } from './utils.js';
 
 import {
   newCard,
-  submitFormHandler,
+  addNewCard,
   cards,
   popupCard,
-  formCard,
-  addLike
+  formCard
 } from './card.js';
 
 import {
@@ -21,19 +19,18 @@ import {
 } from './validate.js';
 
 import {
-  closeOverlay,
-  saveText,
+  handleOverlayClose,
+  handleProfileFormSubmit,
   popupProfile,
   profileName,
   profileDescription,
   formProfile,
   inputProfileSubtitle,
   inputProfileName,
-  closeEscPopup
+  popups
 } from './modal.js';
 
 const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /*кнопка редкатирования профиля*/
-const buttonsClose = document.querySelectorAll('.popup__img'); /*кнопки закрытия попа*/
 const popupCardButtonAdd = document.querySelector('.profile__add-button'); /*кнопка добавить попап карточки*/
 
 const initialCards = [{
@@ -65,15 +62,13 @@ const initialCards = [{
 
 
 
-formCard.addEventListener('submit', submitFormHandler);
+formCard.addEventListener('submit', addNewCard);
 
-closeOverlay();
+enableValidation(enableObjectValidation);
 
 //открывает попап профиля
 popupProfileButtonEdit.addEventListener('click', function () {
   openPopup(popupProfile);
-  closeEscPopup(popupProfile);
-  enableValidation(enableObjectValidation);
   inputProfileName.value = profileName.textContent;
   inputProfileSubtitle.value = profileDescription.textContent;
 })
@@ -81,24 +76,28 @@ popupProfileButtonEdit.addEventListener('click', function () {
 //открывает попап карточек
 popupCardButtonAdd.addEventListener('click', function () {
   openPopup(popupCard);
-  enableValidation(enableObjectValidation);
-  closeEscPopup(popupCard);
   formCard.reset();
 })
 
+
+
 //кнопка закрытия
-buttonsClose.forEach(function (del) {
-  del.addEventListener('click', function () {
-    closeAllPopup()
+popups.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+    if(evt.target.classList.contains('popup_opened')) {
+      closePopup(popup);
+    }
+    if(evt.target.classList.contains('popup__img')) {
+      closePopup(popup);
+    }
   })
 })
 
+
 //сохраняет введенные данные в попап профиля
-formProfile.addEventListener('submit', saveText);
+formProfile.addEventListener('submit', handleProfileFormSubmit);
 
 /* цикл загружает 6 карточек */
 initialCards.forEach(function (item) {
   cards.append(newCard(item['name'], item['link']));
 })
-//Поставить лайк
-addLike();
