@@ -14,14 +14,14 @@ export const popupCard = document.querySelector('.popup__card');/*блок фо�
 
 export function addNewCard (evt) {
   evt.preventDefault();
-  cards.prepend(newCard(inputCardName.value, inputCardSubtitle.value));
+  cards.prepend(createNewCard(inputCardName.value, inputCardSubtitle.value));
   formCard.reset();
   closePopup(popupCard);
 }
 
 
 /* функция создания карточки */ 
-export function newCard (name, link) {
+export function createNewCard (name, link) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImg = cardElement.querySelector('.card__img');
   cardImg.setAttribute('alt', name);

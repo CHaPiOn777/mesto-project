@@ -6,7 +6,7 @@ import {
 } from './utils.js';
 
 import {
-  newCard,
+  createNewCard,
   addNewCard,
   cards,
   popupCard,
@@ -15,11 +15,11 @@ import {
 
 import {
   enableValidation,
-  enableObjectValidation
+  enableObjectValidation,
+  resetValidation
 } from './validate.js';
 
 import {
-  handleOverlayClose,
   handleProfileFormSubmit,
   popupProfile,
   profileName,
@@ -62,7 +62,11 @@ const initialCards = [{
 
 
 
-formCard.addEventListener('submit', addNewCard);
+formCard.addEventListener('submit', (evt) => {
+  addNewCard(evt);
+  resetValidation(formCard);
+});
+
 
 enableValidation(enableObjectValidation);
 
@@ -99,5 +103,5 @@ formProfile.addEventListener('submit', handleProfileFormSubmit);
 
 /* цикл загружает 6 карточек */
 initialCards.forEach(function (item) {
-  cards.append(newCard(item['name'], item['link']));
+  cards.append(createNewCard(item['name'], item['link']));
 })
