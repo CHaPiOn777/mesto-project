@@ -25,15 +25,6 @@ export function addImg(name, link) {
   elementName.textContent = name
 }
 
-export function handleOverlayClose() {
-  popups.forEach((item) => {
-    item.addEventListener('mousedown', (evt) => {
-      if (evt.target.classList.contains('popup')) {
-        closePopup(item);
-      }
-    })
-  })
-}
 
 export function closeEscPopup (evt) {
   if (evt.key === 'Escape') {
