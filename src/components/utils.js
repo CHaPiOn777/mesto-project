@@ -7,11 +7,9 @@ export function closePopup(popup) {
 }
 
 export function openPopup(popup) {
-  const inputList = Array.from(popup.querySelectorAll(enableObjectValidation.inputSelector));
-  const btn = popup.querySelector(enableObjectValidation.submitButtonSelector);
-  if(btn) {
-    toggleButtonState(inputList, btn, enableObjectValidation);
-  }
+
   popup.classList.add('popup_opened');
   document.addEventListener('keydown', closeEscPopup);
 }
+
+

@@ -7,6 +7,13 @@ export const enableObjectValidation = {
   errorClass: 'popup__error_active'
 }; 
 
+export function resetValidation(form) {
+  const inputList = Array.from(form.querySelectorAll(enableObjectValidation.inputSelector));
+  const btn = form.querySelector(enableObjectValidation.submitButtonSelector);
+  if(btn) {
+    toggleButtonState(inputList, btn, enableObjectValidation);
+  }
+}
 const hasInvalidInput = (inputList) => {
   // проходим по этому массиву методом some
   return inputList.some((inputElement) => {
