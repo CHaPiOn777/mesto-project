@@ -70,6 +70,7 @@ export function enableValidation(options) {
 function setEventListeners(form, options) {
   const inputList = Array.from(form.querySelectorAll(options.inputSelector));
   const btn = form.querySelector(options.submitButtonSelector);
+  toggleButtonState(inputList, btn, options);
   inputList.forEach((item) => {
     item.addEventListener('input', () => {
       isValid(item, form, options);
