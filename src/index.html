@@ -15,9 +15,9 @@
   </header>
   <main>
     <section class="profile">
-      <img src="<%=require('./images/Жак.jpg')%>" alt="Жак-Ив Кусто" class="profile__avatar">
+      <div class="profile__avatar"></div>
       <div class="profile__name">
-        <h1 class="profile__title">Жак-Ив Кусто</h1>
+        <h1 class="profile__title">Владислав</h1>
         <button class="profile__edit-button" type="button" aria-label="Кнопка изменить профиль"></button>
         <p class="profile__subtitle">Исследователь океана</p>
       </div>
@@ -32,6 +32,21 @@
   <footer class="footer">
     <p class="footer__paragraph">© 2022 Mesto Russia</p>
   </footer>
+
+  <div class="popup popup__profile-icon">
+    <div class="popup__container overlay">
+      <button class="popup__img" type="button" aria-label="Кнопка закрыть попап"></button>
+      <form class="popup__form" name="popupProfileIcon" novalidate>
+        <h2 class="popup__header">Обновить аватар</h2>
+        <fieldset class="popup__item">
+          <input class="popup__text" required placeholder="Ссылка на картинку" type="url" name="subtitle"
+            id="subtitle">
+          <span class="popup__error subtitle-error"></span>
+          <button class="popup__text-button" type="submit" aria-label="Кнопка сохранить">Сохранить</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
 
   <div class="popup popup__profile">
     <div class="popup__container overlay">

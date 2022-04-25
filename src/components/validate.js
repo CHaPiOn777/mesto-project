@@ -5,7 +5,7 @@ export const enableObjectValidation = {
   inactiveButtonClass: 'popup__text-button_inactive',
   inputErrorClass: 'popup__text_error',
   errorClass: 'popup__error_active'
-}; 
+};
 
 export function resetValidation(form) {
   const inputList = Array.from(form.querySelectorAll(enableObjectValidation.inputSelector));

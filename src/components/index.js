@@ -6,9 +6,9 @@ import {
 } from './utils.js';
 
 import {
-  createNewCard,
+  downloadCards,
   addNewCard,
-  cards,
+  checkMyCard,
   popupCard,
   formCard
 } from './card.js';
@@ -18,6 +18,10 @@ import {
   enableObjectValidation,
   resetValidation
 } from './validate.js';
+
+import {
+  callServer
+} from './api.js';
 
 import {
   handleProfileFormSubmit,
@@ -32,55 +36,56 @@ import {
 
 const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /*кнопка редкатирования профиля*/
 const popupCardButtonAdd = document.querySelector('.profile__add-button'); /*кнопка добавить попап карточки*/
-
-const initialCards = [{
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+const profileIcon = document.querySelector('.profile__avatar');
+const popupProfileIcon = document.querySelector('.popup__profile-icon');
+const formProfileIcon = document.forms.popupProfileIcon;
+const inputProfileIcon = formProfileIcon.elements.subtitle;
 
 
 
 
 formCard.addEventListener('submit', (evt) => {
   addNewCard(evt);
+
   resetValidation(formCard);
 });
+
+profileIcon.addEventListener('click', () => {
+  openPopup(popupProfileIcon);
+  formProfileIcon.reset();
+  resetValidation(formProfileIcon);
+})
+
+formProfileIcon.addEventListener('submit', () => {
+  profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`;
+  callServer('users/me/avatar', 'PATCH', ({
+    avatar: inputProfileIcon.value
+  }));
+  closePopup(popupProfileIcon);
+});
+
+callServer('users/me', 'GET')
+  .then((result) => {
+    profileIcon.style.backgroundImage = `url(${result.avatar})`;
+  })
+
 
 
 enableValidation(enableObjectValidation);
 
 //открывает попап профиля
-popupProfileButtonEdit.addEventListener('click', function () {
-  openPopup(popupProfile);
-  inputProfileName.value = profileName.textContent;
-  inputProfileSubtitle.value = profileDescription.textContent;
-})
+
 
 //открывает попап карточек
 popupCardButtonAdd.addEventListener('click', function () {
   openPopup(popupCard);
   formCard.reset();
+})
+
+popupProfileButtonEdit.addEventListener('click', function () {
+  openPopup(popupProfile);
+  inputProfileName.value = profileName.textContent;
+  inputProfileSubtitle.value = profileDescription.textContent;
 })
 
 
@@ -97,11 +102,28 @@ popups.forEach((popup) => {
   })
 })
 
-
 //сохраняет введенные данные в попап профиля
-formProfile.addEventListener('submit', handleProfileFormSubmit);
-
-/* цикл загружает 6 карточек */
-initialCards.forEach(function (item) {
-  cards.append(createNewCard(item['name'], item['link']));
+formProfile.addEventListener('submit',() => {
+  callServer('users/me', 'PATCH', ({
+    name: inputProfileName.value,
+    about: inputProfileSubtitle.value
+  }));
+  handleProfileFormSubmit();
 })
+
+
+callServer('cards', 'GET')
+  .then((result) => {
+    downloadCards(result);
+    console.log(result);
+  }); 
+
+callServer('users/me', 'GET')
+  .then((result) => {
+    profileName.textContent = result.name;
+    profileDescription.textContent = result.about;
+  })
+
+
+
+

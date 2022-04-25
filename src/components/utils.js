@@ -1,5 +1,4 @@
 import {closeEscPopup} from './modal.js';
-import {enableObjectValidation, toggleButtonState} from './validate.js';
 
 export function closePopup(popup) {
   popup.classList.remove('popup_opened');
