@@ -2,13 +2,13 @@ import '../style/index.css';
 
 import {
   openPopup,
-  closePopup
+  closePopup,
+  renderLoading
 } from './utils.js';
 
 import {
   downloadCards,
   addNewCard,
-  checkMyCard,
   popupCard,
   formCard
 } from './card.js';
@@ -40,14 +40,14 @@ const profileIcon = document.querySelector('.profile__avatar');
 const popupProfileIcon = document.querySelector('.popup__profile-icon');
 const formProfileIcon = document.forms.popupProfileIcon;
 const inputProfileIcon = formProfileIcon.elements.subtitle;
+const btnProfile = document.querySelector('.btn-profile');
+const btnProfileIcon = document.querySelector('.btn-profile-icon');
 
 
 
 
-formCard.addEventListener('submit', (evt) => {
-  addNewCard(evt);
-
-  resetValidation(formCard);
+formCard.addEventListener('submit', () => {
+  addNewCard();
 });
 
 profileIcon.addEventListener('click', () => {
@@ -57,19 +57,24 @@ profileIcon.addEventListener('click', () => {
 })
 
 formProfileIcon.addEventListener('submit', () => {
+  renderLoading(true, btnProfileIcon);
   profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`;
   callServer('users/me/avatar', 'PATCH', ({
     avatar: inputProfileIcon.value
-  }));
-  closePopup(popupProfileIcon);
+  }))
+    .catch(err => console.error(`Ошибка: ${err.status}`))
+    .finally(res => {
+      renderLoading(false, btnProfileIcon);
+      closePopup(popupProfileIcon);
+    });
+
 });
 
 callServer('users/me', 'GET')
   .then((result) => {
     profileIcon.style.backgroundImage = `url(${result.avatar})`;
   })
-
-
+  .catch(err => console.error(`Ошибка: ${err.status}`));
 
 enableValidation(enableObjectValidation);
 
@@ -80,6 +85,7 @@ enableValidation(enableObjectValidation);
 popupCardButtonAdd.addEventListener('click', function () {
   openPopup(popupCard);
   formCard.reset();
+  resetValidation(formCard);
 })
 
 popupProfileButtonEdit.addEventListener('click', function () {
@@ -101,29 +107,28 @@ popups.forEach((popup) => {
     }
   })
 })
-
 //сохраняет введенные данные в попап профиля
 formProfile.addEventListener('submit',() => {
+  renderLoading(true, btnProfile);
   callServer('users/me', 'PATCH', ({
     name: inputProfileName.value,
     about: inputProfileSubtitle.value
-  }));
+  }))
+    .catch(err => console.error(`Ошибка: ${err.status}`))
+    .finally(res => renderLoading(false, btnProfile));
   handleProfileFormSubmit();
 })
-
 
 callServer('cards', 'GET')
   .then((result) => {
     downloadCards(result);
     console.log(result);
-  }); 
+  })
+  .catch(err => console.error(`Ошибка: ${err.status}`));
 
 callServer('users/me', 'GET')
   .then((result) => {
     profileName.textContent = result.name;
     profileDescription.textContent = result.about;
   })
-
-
-
-
+  .catch(err => console.error(`Ошибка: ${err.status}`));

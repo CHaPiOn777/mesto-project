@@ -14,7 +14,8 @@ export function callServer(what, method, info) {
       return res.json();
     }
     // если ошибка, отклоняем промис
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+
+  })
+  .catch(err => console.error(`Ошибка: ${err.status}`))
 }
 
