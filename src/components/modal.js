@@ -11,7 +11,7 @@ export const popups = document.querySelectorAll('.popup');
 
 
 export function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
+  // evt.preventDefault();
   profileName.textContent = inputProfileName.value;
   profileDescription.textContent = inputProfileSubtitle.value;
   closePopup(popupProfile)

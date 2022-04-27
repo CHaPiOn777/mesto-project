@@ -15,9 +15,9 @@
   </header>
   <main>
     <section class="profile">
-      <img src="<%=require('./images/Жак.jpg')%>" alt="Жак-Ив Кусто" class="profile__avatar">
+      <div class="profile__avatar"></div>
       <div class="profile__name">
-        <h1 class="profile__title">Жак-Ив Кусто</h1>
+        <h1 class="profile__title">Владислав</h1>
         <button class="profile__edit-button" type="button" aria-label="Кнопка изменить профиль"></button>
         <p class="profile__subtitle">Исследователь океана</p>
       </div>
@@ -25,7 +25,7 @@
     </section>
 
     <section class="cards">
-      
+
     </section>
   </main>
 
@@ -33,17 +33,33 @@
     <p class="footer__paragraph">© 2022 Mesto Russia</p>
   </footer>
 
+  <div class="popup popup__profile-icon">
+    <div class="popup__container overlay">
+      <button class="popup__img" type="button" aria-label="Кнопка закрыть попап"></button>
+      <form class="popup__form" name="popupProfileIcon" novalidate>
+        <h2 class="popup__header">Обновить аватар</h2>
+        <fieldset class="popup__item">
+          <input class="popup__text" required placeholder="Ссылка на картинку" type="url" name="subtitle" id="subtitle">
+          <span class="popup__error subtitle-error"></span>
+          <button class="popup__text-button btn-profile-icon" id="Сохранить" type="submit" aria-label="Кнопка сохранить">Сохранить</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
   <div class="popup popup__profile">
     <div class="popup__container overlay">
       <button class="popup__img" type="button" aria-label="Кнопка закрыть попап"></button>
       <form class="popup__form" name="popupProfile" novalidate>
         <h2 class="popup__header">Редактировать профиль</h2>
         <fieldset class="popup__item">
-          <input class="popup__text" required minlength="2" maxlength="40" value="Жак-Ив Кусто" type="text" name="name" id="name">
+          <input class="popup__text" required minlength="2" maxlength="40" value="Жак-Ив Кусто" type="text" name="name"
+            id="name">
           <span class="popup__error name-error"></span>
-          <input class="popup__text" required minlength="2" maxlength="200" value="Исследователь океана" type="text" name="subtitle" id="subtitle">
+          <input class="popup__text" required minlength="2" maxlength="200" value="Исследователь океана" type="text"
+            name="subtitle" id="subtitle">
           <span class="popup__error subtitle-error"></span>
-          <button class="popup__text-button" type="submit" aria-label="Кнопка сохранить">Сохранить</button>
+          <button class="popup__text-button btn-profile" id="Сохранить" type="submit" aria-label="Кнопка сохранить">Сохранить</button>
         </fieldset>
       </form>
     </div>
@@ -55,13 +71,13 @@
       <form class="popup__form" name="popupCard" novalidate>
         <h2 class="popup__header">Новое место</h2>
         <fieldset class="popup__item">
-          <input class="popup__text" required minlength="2" maxlength="30" placeholder="Название" type="text" name="name" id="name">
+          <input class="popup__text" required minlength="2" maxlength="30" placeholder="Название" type="text"
+            name="name" id="name">
           <span class="popup__error name-error"></span>
-          <input class="popup__text" required placeholder="Ссылка на картинку" type="url" name="subtitle"
-            id="subtitle">
+          <input class="popup__text" required placeholder="Ссылка на картинку" type="url" name="subtitle" id="subtitle">
           <span class="popup__error subtitle-error"></span>
-          <button class="popup__text-button popup__text-button-card" type="submit" aria-label="Кнопка сохранить"
-            id="button_new">Создать</button>
+          <button class="popup__text-button popup__text-button-card btn-card" type="submit" aria-label="Кнопка сохранить"
+            id="Создать">Создать</button>
         </fieldset>
       </form>
     </div>
@@ -73,7 +89,10 @@
       <img class="card__img" alt="" src="" aria-label="">
       <div class="card__name-city">
         <h2 class="card__title"></h2>
-        <button class="card__like" aria-label="Кнопка поставить лайк"></button>
+        <div class="card__like-block">
+          <button class="card__like" aria-label="Кнопка поставить лайк"></button>
+          <p class="card__like-number">0</p>
+        </div>
       </div>
     </div>
   </template>

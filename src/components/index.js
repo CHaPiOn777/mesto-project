@@ -2,13 +2,13 @@ import '../style/index.css';
 
 import {
   openPopup,
-  closePopup
+  closePopup,
+  renderLoading
 } from './utils.js';
 
 import {
-  createNewCard,
+  downloadCards,
   addNewCard,
-  cards,
   popupCard,
   formCard
 } from './card.js';
@@ -18,6 +18,10 @@ import {
   enableObjectValidation,
   resetValidation
 } from './validate.js';
+
+import {
+  callServer
+} from './api.js';
 
 import {
   handleProfileFormSubmit,
@@ -32,55 +36,62 @@ import {
 
 const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /*кнопка редкатирования профиля*/
 const popupCardButtonAdd = document.querySelector('.profile__add-button'); /*кнопка добавить попап карточки*/
-
-const initialCards = [{
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+const profileIcon = document.querySelector('.profile__avatar');
+const popupProfileIcon = document.querySelector('.popup__profile-icon');
+const formProfileIcon = document.forms.popupProfileIcon;
+const inputProfileIcon = formProfileIcon.elements.subtitle;
+const btnProfile = document.querySelector('.btn-profile');
+const btnProfileIcon = document.querySelector('.btn-profile-icon');
 
 
 
 
-formCard.addEventListener('submit', (evt) => {
-  addNewCard(evt);
-  resetValidation(formCard);
+formCard.addEventListener('submit', () => {
+  addNewCard();
 });
 
+profileIcon.addEventListener('click', () => {
+  openPopup(popupProfileIcon);
+  formProfileIcon.reset();
+  resetValidation(formProfileIcon);
+})
+
+formProfileIcon.addEventListener('submit', () => {
+  renderLoading(true, btnProfileIcon);
+  profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`;
+  callServer('users/me/avatar', 'PATCH', ({
+    avatar: inputProfileIcon.value
+  }))
+    .catch(err => console.error(`Ошибка: ${err.status}`))
+    .finally(res => {
+      renderLoading(false, btnProfileIcon);
+      closePopup(popupProfileIcon);
+    });
+
+});
+
+callServer('users/me', 'GET')
+  .then((result) => {
+    profileIcon.style.backgroundImage = `url(${result.avatar})`;
+  })
+  .catch(err => console.error(`Ошибка: ${err.status}`));
 
 enableValidation(enableObjectValidation);
 
 //открывает попап профиля
-popupProfileButtonEdit.addEventListener('click', function () {
-  openPopup(popupProfile);
-  inputProfileName.value = profileName.textContent;
-  inputProfileSubtitle.value = profileDescription.textContent;
-})
+
 
 //открывает попап карточек
 popupCardButtonAdd.addEventListener('click', function () {
   openPopup(popupCard);
   formCard.reset();
+  resetValidation(formCard);
+})
+
+popupProfileButtonEdit.addEventListener('click', function () {
+  openPopup(popupProfile);
+  inputProfileName.value = profileName.textContent;
+  inputProfileSubtitle.value = profileDescription.textContent;
 })
 
 
@@ -96,12 +107,28 @@ popups.forEach((popup) => {
     }
   })
 })
-
-
 //сохраняет введенные данные в попап профиля
-formProfile.addEventListener('submit', handleProfileFormSubmit);
-
-/* цикл загружает 6 карточек */
-initialCards.forEach(function (item) {
-  cards.append(createNewCard(item['name'], item['link']));
+formProfile.addEventListener('submit',() => {
+  renderLoading(true, btnProfile);
+  callServer('users/me', 'PATCH', ({
+    name: inputProfileName.value,
+    about: inputProfileSubtitle.value
+  }))
+    .catch(err => console.error(`Ошибка: ${err.status}`))
+    .finally(res => renderLoading(false, btnProfile));
+  handleProfileFormSubmit();
 })
+
+callServer('cards', 'GET')
+  .then((result) => {
+    downloadCards(result);
+    console.log(result);
+  })
+  .catch(err => console.error(`Ошибка: ${err.status}`));
+
+callServer('users/me', 'GET')
+  .then((result) => {
+    profileName.textContent = result.name;
+    profileDescription.textContent = result.about;
+  })
+  .catch(err => console.error(`Ошибка: ${err.status}`));
