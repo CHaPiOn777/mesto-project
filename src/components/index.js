@@ -58,10 +58,11 @@ profileIcon.addEventListener('click', () => {
 
 formProfileIcon.addEventListener('submit', () => {
   renderLoading(true, btnProfileIcon);
-  profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`;
+
   callServer('users/me/avatar', 'PATCH', ({
     avatar: inputProfileIcon.value
   }))
+    .then(res => profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`)
     .catch(err => console.error(`Ошибка: ${err.status}`))
     .finally(res => {
       renderLoading(false, btnProfileIcon);
@@ -114,9 +115,10 @@ formProfile.addEventListener('submit',() => {
     name: inputProfileName.value,
     about: inputProfileSubtitle.value
   }))
+    .then(res => handleProfileFormSubmit())
     .catch(err => console.error(`Ошибка: ${err.status}`))
     .finally(res => renderLoading(false, btnProfile));
-  handleProfileFormSubmit();
+
 })
 
 callServer('cards', 'GET')

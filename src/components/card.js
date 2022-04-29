@@ -32,12 +32,12 @@ export function addNewCard() {
     }))
     .then(res => {
       cards.prepend(createNewCard(res.name, res.link, res.owner._id, res._id, res.likes.length, res.likes));
+      closePopup(popupCard);
+      formCard.reset();
     })
     .catch(err => console.error(`Ошибка: ${err.status}`))
     .finally(res => {
       renderLoading(false, btnCard);
-      closePopup(popupCard);
-      formCard.reset();
     });
 }
 
@@ -61,15 +61,20 @@ function deleteCard(remove, cardId, cardElement) {
 
 function putLike(cardElement, like, cardId) {
   cardElement.querySelector('.card__like').addEventListener('click', (evt) => {
-    evt.target.classList.toggle('card__like_active');
-    if (evt.target.classList.contains('card__like_active')) {
+
+    if (!evt.target.classList.contains('card__like_active')) {
       callServer(`cards/likes/${cardId}`, 'PUT')
         .then(res => {
+          evt.target.classList.toggle('card__like_active');
           like.textContent = res.likes.length;
         })
+        .catch(err => console.error(`Ошибка: ${err.status}`))
     } else {
       callServer(`cards/likes/${cardId}`, 'DELETE')
-        .then(res => like.textContent = res.likes.length)
+        .then(res => {
+          evt.target.classList.toggle('card__like_active');
+          like.textContent = res.likes.length;
+        }) 
         .catch(err => console.error(`Ошибка: ${err.status}`))
     }
   })
