@@ -7,7 +7,7 @@ import {
 } from './utils.js';
 
 import {
-  downloadCards,
+  getCards,
   addNewCard,
   popupCard,
   formCard
@@ -24,6 +24,7 @@ import {
 } from './api.js';
 
 import {
+  getUserInfo,
   handleProfileFormSubmit,
   popupProfile,
   profileName,
@@ -58,10 +59,11 @@ profileIcon.addEventListener('click', () => {
 
 formProfileIcon.addEventListener('submit', () => {
   renderLoading(true, btnProfileIcon);
-  profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`;
+
   callServer('users/me/avatar', 'PATCH', ({
     avatar: inputProfileIcon.value
   }))
+    .then(res => profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`)
     .catch(err => console.error(`Ошибка: ${err.status}`))
     .finally(res => {
       renderLoading(false, btnProfileIcon);
@@ -114,21 +116,13 @@ formProfile.addEventListener('submit',() => {
     name: inputProfileName.value,
     about: inputProfileSubtitle.value
   }))
+    .then(res => handleProfileFormSubmit())
     .catch(err => console.error(`Ошибка: ${err.status}`))
     .finally(res => renderLoading(false, btnProfile));
-  handleProfileFormSubmit();
+
 })
 
-callServer('cards', 'GET')
-  .then((result) => {
-    downloadCards(result);
-    console.log(result);
-  })
-  .catch(err => console.error(`Ошибка: ${err.status}`));
-
-callServer('users/me', 'GET')
-  .then((result) => {
-    profileName.textContent = result.name;
-    profileDescription.textContent = result.about;
-  })
-  .catch(err => console.error(`Ошибка: ${err.status}`));
+  Promise.all([getUserInfo(), getCards()])
+    .then(i => console.log(i))
+    .catch(err => console.error(`Ошибка: ${err.status}`));
+  

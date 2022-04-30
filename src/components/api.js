@@ -13,9 +13,8 @@ export function callServer(what, method, info) {
     if (res.ok) {
       return res.json();
     }
+    return Promise.reject(`Ошибка: ${res.status}`);
     // если ошибка, отклоняем промис
-
   })
-  .catch(err => console.error(`Ошибка: ${err.status}`))
 }
 

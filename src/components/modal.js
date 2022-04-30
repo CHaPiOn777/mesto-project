@@ -1,4 +1,10 @@
-import {closePopup} from './utils.js';
+import {
+  closePopup
+} from './utils.js';
+import {
+  callServer
+} from './api.js';
+
 export const elementImg = document.querySelector('.card-img__image');//место ссылки картинки
 export const elementName = document.querySelector('.card-img__subtitle');//место имени картинки
 export const popupProfile = document.querySelector('.popup__profile');/*блок формы редктирования карточки*/
@@ -8,6 +14,7 @@ export const formProfile = document.forms.popupProfile;
 export const inputProfileName = formProfile.elements.name;
 export const inputProfileSubtitle = formProfile.elements.subtitle;
 export const popups = document.querySelectorAll('.popup');
+export let userId;
 
 
 export function handleProfileFormSubmit(evt) {
@@ -16,7 +23,14 @@ export function handleProfileFormSubmit(evt) {
   profileDescription.textContent = inputProfileSubtitle.value;
   closePopup(popupProfile)
 }
-
+export function getUserInfo() {
+  callServer('users/me', 'GET')
+  .then((result) => {
+    userId = result._id;
+    profileName.textContent = result.name;
+    profileDescription.textContent = result.about;
+  })
+}
 //функция добавляет адрес ссылки картинки и название в расширенную картинку
 export function addImg(name, link) {
   elementImg.setAttribute('src', link);
