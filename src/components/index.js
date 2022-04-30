@@ -7,7 +7,7 @@ import {
 } from './utils.js';
 
 import {
-  downloadCards,
+  getCards,
   addNewCard,
   popupCard,
   formCard
@@ -24,6 +24,7 @@ import {
 } from './api.js';
 
 import {
+  getUserInfo,
   handleProfileFormSubmit,
   popupProfile,
   profileName,
@@ -121,16 +122,7 @@ formProfile.addEventListener('submit',() => {
 
 })
 
-callServer('cards', 'GET')
-  .then((result) => {
-    downloadCards(result);
-    console.log(result);
-  })
-  .catch(err => console.error(`Ошибка: ${err.status}`));
-
-callServer('users/me', 'GET')
-  .then((result) => {
-    profileName.textContent = result.name;
-    profileDescription.textContent = result.about;
-  })
-  .catch(err => console.error(`Ошибка: ${err.status}`));
+  Promise.all([getUserInfo(), getCards()])
+    .then(i => console.log(i))
+    .catch(err => console.error(`Ошибка: ${err.status}`));
+  

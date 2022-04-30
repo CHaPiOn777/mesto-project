@@ -6,7 +6,8 @@ import {
 } from './utils.js';
 import {
   addImg,
-  closeEscPopup
+  closeEscPopup,
+  userId
 } from './modal.js';
 import {
   callServer
@@ -42,7 +43,7 @@ export function addNewCard() {
 }
 
 function checkMyCard(id, icon) {
-  if (id != '12b8ae712c461ad10ad8a065') {
+  if (id != userId) {
     icon.style.display = 'none';
   } else {
     icon.style.display = 'block';
@@ -82,7 +83,7 @@ function putLike(cardElement, like, cardId) {
 
 function checkMyLike(cardElement, likes) {
   likes.forEach(item => {
-    if (item._id == '12b8ae712c461ad10ad8a065') {
+    if (item._id == userId) {
       cardElement.querySelector('.card__like').classList.add('card__like_active')
     }
   })
@@ -128,3 +129,11 @@ export function downloadCards(result) {
     cards.append(createNewCard(result[i].name, result[i].link, result[i].owner._id, result[i]._id, result[i].likes.length, result[i].likes));
   }
 }
+
+export function getCards() {
+  callServer('cards', 'GET')
+  .then((result) => {
+    downloadCards(result);
+  })
+}
+
