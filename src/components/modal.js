@@ -14,7 +14,6 @@ export const formProfile = document.forms.popupProfile;
 export const inputProfileName = formProfile.elements.name;
 export const inputProfileSubtitle = formProfile.elements.subtitle;
 export const popups = document.querySelectorAll('.popup');
-export let userId;
 
 
 export function handleProfileFormSubmit(evt) {
@@ -23,14 +22,14 @@ export function handleProfileFormSubmit(evt) {
   profileDescription.textContent = inputProfileSubtitle.value;
   closePopup(popupProfile)
 }
-export function getUserInfo() {
+export let getUserInfo = new Promise ((resolve, reject) => {
   callServer('users/me', 'GET')
   .then((result) => {
-    userId = result._id;
-    profileName.textContent = result.name;
-    profileDescription.textContent = result.about;
+    resolve(result)
   })
-}
+  .catch(err => reject(console.error(`Ошибка: ${err.status}`)))
+})
+
 //функция добавляет адрес ссылки картинки и название в расширенную картинку
 export function addImg(name, link) {
   elementImg.setAttribute('src', link);

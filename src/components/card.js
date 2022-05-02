@@ -4,10 +4,12 @@ import {
   openPopup,
   renderLoading
 } from './utils.js';
+import { 
+  userId
+} from './index.js';
 import {
   addImg,
-  closeEscPopup,
-  userId
+  closeEscPopup
 } from './modal.js';
 import {
   callServer
@@ -26,6 +28,7 @@ export const popupCard = document.querySelector('.popup__card'); /*блок фо
 
 
 export function addNewCard() {
+
   renderLoading(true, btnCard);
   callServer('cards', 'POST', ({
       link: inputCardSubtitle.value,
@@ -95,12 +98,12 @@ export function createNewCard(name, link, myId, cardId, numLike, likeActiveId) {
   const remove = cardElement.querySelector('.card__delete');
   const like = cardElement.querySelector('.card__like-number');
 
+
   like.textContent = numLike;
   cardImg.setAttribute('alt', name);
   cardImg.setAttribute('src', link)
   cardImg.setAttribute('aria-label', name);
   cardElement.querySelector('.card__title').textContent = name;
-
 
   //поставить лайк
   putLike(cardElement, like, cardId);
@@ -130,10 +133,11 @@ export function downloadCards(result) {
   }
 }
 
-export function getCards() {
+export let getCards =  new Promise((resolve, reject) => {
   callServer('cards', 'GET')
   .then((result) => {
-    downloadCards(result);
+    resolve(result)
   })
-}
+  .catch(err => reject(console.error(`Ошибка: ${err.status}`)))
+})
 
