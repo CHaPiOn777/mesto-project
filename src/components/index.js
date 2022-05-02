@@ -10,7 +10,8 @@ import {
   getCards,
   addNewCard,
   popupCard,
-  formCard
+  formCard,
+  downloadCards
 } from './card.js';
 
 import {
@@ -43,6 +44,7 @@ const formProfileIcon = document.forms.popupProfileIcon;
 const inputProfileIcon = formProfileIcon.elements.subtitle;
 const btnProfile = document.querySelector('.btn-profile');
 const btnProfileIcon = document.querySelector('.btn-profile-icon');
+export let userId;
 
 
 
@@ -53,6 +55,7 @@ formCard.addEventListener('submit', () => {
 
 profileIcon.addEventListener('click', () => {
   openPopup(popupProfileIcon);
+
   formProfileIcon.reset();
   resetValidation(formProfileIcon);
 })
@@ -63,11 +66,14 @@ formProfileIcon.addEventListener('submit', () => {
   callServer('users/me/avatar', 'PATCH', ({
     avatar: inputProfileIcon.value
   }))
-    .then(res => profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`)
+    .then(res => {
+      profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`
+      closePopup(popupProfileIcon);
+    })
     .catch(err => console.error(`Ошибка: ${err.status}`))
     .finally(res => {
       renderLoading(false, btnProfileIcon);
-      closePopup(popupProfileIcon);
+ 
     });
 
 });
@@ -122,7 +128,12 @@ formProfile.addEventListener('submit',() => {
 
 })
 
-  Promise.all([getUserInfo(), getCards()])
-    .then(i => console.log(i))
-    .catch(err => console.error(`Ошибка: ${err.status}`));
+Promise.all([getUserInfo, getCards])
+  .then(([userData, cards]) => {
+    profileName.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    userId = userData._id;
+    downloadCards(cards);
+  })
+  .catch(err => console.error(`Ошибка: ${err.status}`))
   
