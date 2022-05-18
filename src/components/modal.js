@@ -1,5 +1,5 @@
 import {
-  closePopup
+  Popup
 } from './utils.js';
 import {
   callServer
@@ -17,10 +17,10 @@ export const popups = document.querySelectorAll('.popup');
 
 
 export function handleProfileFormSubmit(evt) {
-  // evt.preventDefault();
   profileName.textContent = inputProfileName.value;
   profileDescription.textContent = inputProfileSubtitle.value;
-  closePopup(popupProfile)
+  const popup = new Popup(popupProfile);
+  popup.closePopup();
 }
 export let getUserInfo = new Promise ((resolve, reject) => {
   callServer('users/me', 'GET')
@@ -39,9 +39,3 @@ export function addImg(name, link) {
 }
 
 
-export function closeEscPopup (evt) {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopup(openedPopup);
-  }
-}

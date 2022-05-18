@@ -3,7 +3,8 @@ import '../style/index.css';
 import {
   openPopup,
   closePopup,
-  renderLoading
+  renderLoading,
+  Popup
 } from './utils.js';
 
 import {
@@ -32,8 +33,7 @@ import {
   profileDescription,
   formProfile,
   inputProfileSubtitle,
-  inputProfileName,
-  popups
+  inputProfileName
 } from './modal.js';
 
 const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /*кнопка редкатирования профиля*/
@@ -54,7 +54,9 @@ formCard.addEventListener('submit', () => {
 });
 
 profileIcon.addEventListener('click', () => {
-  openPopup(popupProfileIcon);
+
+  const popup = new Popup(popupProfileIcon);
+  popup.openPopup();
 
   formProfileIcon.reset();
   resetValidation(formProfileIcon);
@@ -67,8 +69,9 @@ formProfileIcon.addEventListener('submit', () => {
     avatar: inputProfileIcon.value
   }))
     .then(res => {
-      profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`
-      closePopup(popupProfileIcon);
+      profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`;
+      const popup = new Popup(popupProfileIcon);
+      popup.closePopup();
     })
     .catch(err => console.error(`Ошибка: ${err.status}`))
     .finally(res => {
@@ -91,30 +94,22 @@ enableValidation(enableObjectValidation);
 
 //открывает попап карточек
 popupCardButtonAdd.addEventListener('click', function () {
-  openPopup(popupCard);
+  const popup = new Popup(popupCard);
+  popup.openPopup();
   formCard.reset();
   resetValidation(formCard);
 })
 
 popupProfileButtonEdit.addEventListener('click', function () {
-  openPopup(popupProfile);
+  const popup = new Popup(popupProfile);
+  popup.openPopup();
   inputProfileName.value = profileName.textContent;
   inputProfileSubtitle.value = profileDescription.textContent;
 })
 
 
 
-//кнопка закрытия
-popups.forEach((popup) => {
-  popup.addEventListener('mousedown', (evt) => {
-    if(evt.target.classList.contains('popup_opened')) {
-      closePopup(popup);
-    }
-    if(evt.target.classList.contains('popup__img')) {
-      closePopup(popup);
-    }
-  })
-})
+
 //сохраняет введенные данные в попап профиля
 formProfile.addEventListener('submit',() => {
   renderLoading(true, btnProfile);
