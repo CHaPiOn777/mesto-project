@@ -1,15 +1,13 @@
 // функция создания карточки
 import {
-  closePopup,
-  openPopup,
+  Popup,
   renderLoading
 } from './utils.js';
 import { 
   userId
 } from './index.js';
 import {
-  addImg,
-  closeEscPopup
+  addImg
 } from './modal.js';
 import {
   callServer
@@ -36,7 +34,8 @@ export function addNewCard() {
     }))
     .then(res => {
       cards.prepend(createNewCard(res.name, res.link, res.owner._id, res._id, res.likes.length, res.likes));
-      closePopup(popupCard);
+      const popup = new Popup(popupCard);
+      popup.closePopup();
       formCard.reset();
     })
     .catch(err => console.error(`Ошибка: ${err.status}`))
@@ -115,8 +114,8 @@ export function createNewCard(name, link, myId, cardId, numLike, likeActiveId) {
 
   // При нажатии на картинку в карточке открывает ее полное изображение
   cardImg.addEventListener('click', function () {
-    openPopup(popupImg);
-    closeEscPopup(popupImg);
+    const popup = new Popup(popupImg);
+    popup.openPopup();
     addImg(name, link)
   })
   //проверрить мой ли лайк стоит
