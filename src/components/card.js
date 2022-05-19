@@ -1,7 +1,8 @@
 // функция создания карточки
 import {
   Popup,
-  renderLoading
+  renderLoading,
+  PopupWithImage
 } from './utils.js';
 import { 
   userId
@@ -10,7 +11,8 @@ import {
   addImg
 } from './modal.js';
 import {
-  callServer
+  callServer,
+  Api
 } from './api.js';
 
 export const popupImg = document.querySelector('.card-img'); /*блок формы редктирования картинки*/
@@ -28,14 +30,13 @@ export const popupCard = document.querySelector('.popup__card'); /*блок фо
 export function addNewCard() {
 
   renderLoading(true, btnCard);
-  callServer('cards', 'POST', ({
-      link: inputCardSubtitle.value,
-      name: inputCardName.value
-    }))
+  new Api ('cards', 'POST', ({
+    link: inputCardSubtitle.value,
+    name: inputCardName.value
+  })).fetch()
     .then(res => {
       cards.prepend(createNewCard(res.name, res.link, res.owner._id, res._id, res.likes.length, res.likes));
-      const popup = new Popup(popupCard);
-      popup.closePopup();
+      new Popup(popupCard).closePopup();
       formCard.reset();
     })
     .catch(err => console.error(`Ошибка: ${err.status}`))
@@ -54,7 +55,7 @@ function checkMyCard(id, icon) {
 
 function deleteCard(remove, cardId, cardElement) {
   remove.addEventListener('click', function () {
-    callServer(`cards/${cardId}`, 'DELETE')
+    new Api(`cards/${cardId}`, 'DELETE').fetch()
       .then(() => {
         cardElement.remove();
       })
@@ -66,14 +67,14 @@ function putLike(cardElement, like, cardId) {
   cardElement.querySelector('.card__like').addEventListener('click', (evt) => {
 
     if (!evt.target.classList.contains('card__like_active')) {
-      callServer(`cards/likes/${cardId}`, 'PUT')
+      new Api(`cards/likes/${cardId}`, 'PUT').fetch()
         .then(res => {
           evt.target.classList.toggle('card__like_active');
           like.textContent = res.likes.length;
         })
         .catch(err => console.error(`Ошибка: ${err.status}`))
     } else {
-      callServer(`cards/likes/${cardId}`, 'DELETE')
+      new Api(`cards/likes/${cardId}`, 'DELETE').fetch()
         .then(res => {
           evt.target.classList.toggle('card__like_active');
           like.textContent = res.likes.length;
@@ -114,9 +115,7 @@ export function createNewCard(name, link, myId, cardId, numLike, likeActiveId) {
 
   // При нажатии на картинку в карточке открывает ее полное изображение
   cardImg.addEventListener('click', function () {
-    const popup = new Popup(popupImg);
-    popup.openPopup();
-    addImg(name, link)
+      new PopupWithImage(popupImg, link, name ).openPopup();
   })
   //проверрить мой ли лайк стоит
   checkMyLike(cardElement, likeActiveId);
@@ -133,7 +132,7 @@ export function downloadCards(result) {
 }
 
 export let getCards =  new Promise((resolve, reject) => {
-  callServer('cards', 'GET')
+  new Api('cards', 'GET').fetch()
   .then((result) => {
     resolve(result)
   })

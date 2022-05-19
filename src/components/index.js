@@ -22,7 +22,8 @@ import {
 } from './validate.js';
 
 import {
-  callServer
+  callServer,
+  Api
 } from './api.js';
 
 import {
@@ -55,8 +56,7 @@ formCard.addEventListener('submit', () => {
 
 profileIcon.addEventListener('click', () => {
 
-  const popup = new Popup(popupProfileIcon);
-  popup.openPopup();
+  new Popup(popupProfileIcon).openPopup();
 
   formProfileIcon.reset();
   resetValidation(formProfileIcon);
@@ -64,24 +64,21 @@ profileIcon.addEventListener('click', () => {
 
 formProfileIcon.addEventListener('submit', () => {
   renderLoading(true, btnProfileIcon);
-
-  callServer('users/me/avatar', 'PATCH', ({
-    avatar: inputProfileIcon.value
-  }))
-    .then(res => {
-      profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`;
-      const popup = new Popup(popupProfileIcon);
-      popup.closePopup();
-    })
-    .catch(err => console.error(`Ошибка: ${err.status}`))
-    .finally(res => {
-      renderLoading(false, btnProfileIcon);
- 
-    });
+    new Api('users/me/avatar', 'PATCH', ({avatar: inputProfileIcon.value})).fetch()
+      .then(res => {
+        profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`;
+        const popup = new Popup(popupProfileIcon);
+        popup.closePopup();
+      })
+      .catch(err => console.error(`Ошибка: ${err.status}`))
+      .finally(res => {
+        renderLoading(false, btnProfileIcon);
+      
+      });
 
 });
 
-callServer('users/me', 'GET')
+new Api('users/me', 'GET').fetch()
   .then((result) => {
     profileIcon.style.backgroundImage = `url(${result.avatar})`;
   })
@@ -94,15 +91,13 @@ enableValidation(enableObjectValidation);
 
 //открывает попап карточек
 popupCardButtonAdd.addEventListener('click', function () {
-  const popup = new Popup(popupCard);
-  popup.openPopup();
+  new Popup(popupCard).openPopup();
   formCard.reset();
   resetValidation(formCard);
 })
 
 popupProfileButtonEdit.addEventListener('click', function () {
-  const popup = new Popup(popupProfile);
-  popup.openPopup();
+  new Popup(popupProfile).openPopup();
   inputProfileName.value = profileName.textContent;
   inputProfileSubtitle.value = profileDescription.textContent;
 })
@@ -113,10 +108,7 @@ popupProfileButtonEdit.addEventListener('click', function () {
 //сохраняет введенные данные в попап профиля
 formProfile.addEventListener('submit',() => {
   renderLoading(true, btnProfile);
-  callServer('users/me', 'PATCH', ({
-    name: inputProfileName.value,
-    about: inputProfileSubtitle.value
-  }))
+  new Api('users/me', 'PATCH', ({name: inputProfileName.value,about: inputProfileSubtitle.value})).fetch()
     .then(res => handleProfileFormSubmit())
     .catch(err => console.error(`Ошибка: ${err.status}`))
     .finally(res => renderLoading(false, btnProfile));
