@@ -1,4 +1,5 @@
 import {closeEscPopup} from './modal.js';
+import {elementImg, elementName} from './modal';
 
 
 export class Popup  {
@@ -34,8 +35,37 @@ export class Popup  {
       })
   }
 }
-
-
+export class PopupWithImage extends Popup {
+  constructor(selector, link, name) {
+    super(selector);
+    this.link = link;
+    this.name = name;
+  }
+  openPopup() {
+    super.openPopup();
+    elementImg.setAttribute('src', this.link);
+    elementImg.setAttribute('alt',  this.name);
+  
+    elementName.textContent = this.name
+  }
+}
+export class PopupWithForm extends Popup {
+  constructor(selector, Api) {
+    super(selector)
+    
+  }
+  _getInputValues(){
+    
+  }
+  setEventListeners() {
+    super.setEventListeners();
+    this.selector.addEventListener("submit", this.Api);
+  }
+  closePopup() {
+    super.closePopup();
+    this.selector.reset();
+  }
+}
 /* export function closePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closeEscPopup); 
