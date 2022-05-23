@@ -49,23 +49,44 @@ export class PopupWithImage extends Popup {
     elementName.textContent = this.name
   }
 }
-export class PopupWithForm extends Popup {
-  constructor(selector, Api) {
-    super(selector)
+// export class PopupWithForm extends Popup {
+//   constructor(selector, Api) {
+//     super(selector)
     
-  }
-  _getInputValues(){
-    
-  }
-  setEventListeners() {
-    super.setEventListeners();
-    this.selector.addEventListener("submit", this.Api);
-  }
-  closePopup() {
-    super.closePopup();
-    this.selector.reset();
-  }
-}
+//   }
+
+//   _getInputValues() {
+//     const data = {};
+//     this._inputs.forEach((input) => {
+//       data[input.name] = input.value;
+//     });
+//     return data;
+//   }
+//   setEventListeners() {
+//     super.setEventListeners();
+//     this.selector.addEventListener("submit",() => {
+      
+//     } this.Api);
+//     formProfileIcon.addEventListener('submit', () => {
+//       renderLoading(true, btnProfileIcon);
+//         new Api('users/me/avatar', 'PATCH', ({avatar: inputProfileIcon.value})).fetch()
+//           .then(res => {
+//             profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`;
+//             const popup = new Popup(popupProfileIcon);
+//             popup.closePopup();
+//           })
+//           .catch(err => console.error(`Ошибка: ${err.status}`))
+//           .finally(res => {
+//             renderLoading(false, btnProfileIcon);
+          
+//           });
+//     });
+//   }
+//   closePopup() {
+//     super.closePopup();
+//     this.selector.reset();
+//   }
+// }
 /* export function closePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closeEscPopup); 

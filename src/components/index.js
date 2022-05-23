@@ -49,6 +49,12 @@ export let userId;
 
 
 
+//открывает попап карточек
+popupCardButtonAdd.addEventListener('click', function () {
+  new Popup(popupCard).openPopup();
+  formCard.reset();
+  resetValidation(formCard);
+})
 
 formCard.addEventListener('submit', () => {
   addNewCard();
@@ -89,12 +95,7 @@ enableValidation(enableObjectValidation);
 //открывает попап профиля
 
 
-//открывает попап карточек
-popupCardButtonAdd.addEventListener('click', function () {
-  new Popup(popupCard).openPopup();
-  formCard.reset();
-  resetValidation(formCard);
-})
+
 
 popupProfileButtonEdit.addEventListener('click', function () {
   new Popup(popupProfile).openPopup();
@@ -112,7 +113,6 @@ formProfile.addEventListener('submit',() => {
     .then(res => handleProfileFormSubmit())
     .catch(err => console.error(`Ошибка: ${err.status}`))
     .finally(res => renderLoading(false, btnProfile));
-
 })
 
 Promise.all([getUserInfo, getCards])

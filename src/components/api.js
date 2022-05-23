@@ -43,7 +43,5 @@ export class Api {
       },
       body: JSON.stringify(this._info)
     }).then((res) => this._requestResult(res))
-
   }
-
 }
