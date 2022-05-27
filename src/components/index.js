@@ -43,6 +43,7 @@ import {
   inputProfileSubtitle,
   inputProfileName
 } from './modal.js';
+import UserInfo from './userInfo.js';
 
 
 const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /*кнопка редкатирования профиля*/
@@ -55,6 +56,7 @@ const btnProfile = document.querySelector('.btn-profile');
 const btnProfileIcon = document.querySelector('.btn-profile-icon');
 export let userId;
 
+const userInfo = new UserInfo(profileName, profileDescription, profileIcon);
 const editPopupValidation = new FormValidator(
   enableObjectValidation,
   formCard
@@ -64,6 +66,7 @@ const addPopupValidation  = new FormValidator(
   enableObjectValidation,
   popupProfile
 );
+
 
 const avatarEditPopopValidation  = new FormValidator(
   enableObjectValidation,
@@ -129,7 +132,7 @@ formProfileIcon.addEventListener('submit', () => {
 
 new Api('users/me', 'GET').fetch()
   .then((result) => {
-    profileIcon.style.backgroundImage = `url(${result.avatar})`;
+    userInfo.setUserAvatar(result);
   })
   .catch(err => console.error(`Ошибка: ${err.status}`));
 
@@ -148,9 +151,9 @@ popupCardButtonAdd.addEventListener('click', function () {
 
 popupProfileButtonEdit.addEventListener('click', function () {
   new Popup(popupProfile).openPopup();
-  inputProfileName.value = profileName.textContent;
-  inputProfileSubtitle.value = profileDescription.textContent;
-  addPopupValidation._resetValidation(popupProfile);
+  const data = userInfo.getUserInfo();
+  inputProfileName.value = data.name;
+  inputProfileSubtitle.value = data.job;
 })
 
 
@@ -168,8 +171,7 @@ formProfile.addEventListener('submit',() => {
 
 Promise.all([getUserInfo, getCards])
   .then(([userData, cards]) => {
-    profileName.textContent = userData.name;
-    profileDescription.textContent = userData.about;
+    userInfo.setUserInfo(userData)
     userId = userData._id;
     new Card(cards, userId, popupImg ).downloadCards()
     // downloadCards(cards);
