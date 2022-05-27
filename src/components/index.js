@@ -3,7 +3,9 @@ import 'core-js/es/symbol';
 import {
   openPopup,
   closePopup,
-  renderLoading
+  renderLoading,
+  PopupWithForm,
+  Popup
 } from './utils.js';
 
 import {
@@ -11,6 +13,11 @@ import {
   addNewCard,
   popupCard,
   formCard,
+  cards,
+  Card,
+  popupImg,
+  inputCardSubtitle,
+  inputCardName,
   downloadCards
 } from './card.js';
 
@@ -22,7 +29,8 @@ import {
 } from './validate.js';
 
 import {
-  callServer
+  callServer,
+  Api
 } from './api.js';
 
 import {
@@ -33,8 +41,7 @@ import {
   profileDescription,
   formProfile,
   inputProfileSubtitle,
-  inputProfileName,
-  popups
+  inputProfileName
 } from './modal.js';
 
 
@@ -69,12 +76,36 @@ addPopupValidation.enableValidation();
 
 
 
-formCard.addEventListener('submit', () => {
-  addNewCard();
-});
+// formCard.addEventListener('submit', () => {
+//   addNewCard();
+// });
+const newCard = new PopupWithForm(popupCard, {
+  formSubmitCallback: (btnCard, data) => {
+    renderLoading(true, btnCard);
+    new Api ('cards', 'POST', ({
+      link: data.subtitle,
+      name: data.name
+    })).fetch()
+      .then(res => {
+        const card = new Card (res, userId, popupImg);
+        const cardNew = card.generate();
+        cards.prepend(cardNew)
+        new Popup(popupCard).closePopup();
+        formCard.reset();
+      })
+      .catch(err => console.error(`Ошибка: ${err.status}`))
+      .finally(res => {
+        renderLoading(false, btnCard);
+      });
+  }
+})
+
+newCard.setEventListeners();
+
 
 profileIcon.addEventListener('click', () => {
-  openPopup(popupProfileIcon);
+
+  new Popup(popupProfileIcon).openPopup();
 
   formProfileIcon.reset();
   avatarEditPopopValidation._resetValidation(formProfileIcon);
@@ -82,23 +113,21 @@ profileIcon.addEventListener('click', () => {
 
 formProfileIcon.addEventListener('submit', () => {
   renderLoading(true, btnProfileIcon);
-
-  callServer('users/me/avatar', 'PATCH', ({
-    avatar: inputProfileIcon.value
-  }))
-    .then(res => {
-      profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`
-      closePopup(popupProfileIcon);
-    })
-    .catch(err => console.error(`Ошибка: ${err.status}`))
-    .finally(res => {
-      renderLoading(false, btnProfileIcon);
- 
-    });
+    new Api('users/me/avatar', 'PATCH', ({avatar: inputProfileIcon.value})).fetch()
+      .then(res => {
+        profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`;
+        const popup = new Popup(popupProfileIcon);
+        popup.closePopup();
+      })
+      .catch(err => console.error(`Ошибка: ${err.status}`))
+      .finally(res => {
+        renderLoading(false, btnProfileIcon);
+      
+      });
 
 });
 
-callServer('users/me', 'GET')
+new Api('users/me', 'GET').fetch()
   .then((result) => {
     profileIcon.style.backgroundImage = `url(${result.avatar})`;
   })
@@ -112,13 +141,13 @@ callServer('users/me', 'GET')
 
 //открывает попап карточек
 popupCardButtonAdd.addEventListener('click', function () {
-  openPopup(popupCard);
+  new Popup(popupCard).openPopup();
   formCard.reset();
   editPopupValidation._resetValidation(formCard);
 })
 
 popupProfileButtonEdit.addEventListener('click', function () {
-  openPopup(popupProfile);
+  new Popup(popupProfile).openPopup();
   inputProfileName.value = profileName.textContent;
   inputProfileSubtitle.value = profileDescription.textContent;
   addPopupValidation._resetValidation(popupProfile);
@@ -126,24 +155,11 @@ popupProfileButtonEdit.addEventListener('click', function () {
 
 
 
-//кнопка закрытия
-popups.forEach((popup) => {
-  popup.addEventListener('mousedown', (evt) => {
-    if(evt.target.classList.contains('popup_opened')) {
-      closePopup(popup);
-    }
-    if(evt.target.classList.contains('popup__img')) {
-      closePopup(popup);
-    }
-  })
-})
+
 //сохраняет введенные данные в попап профиля
 formProfile.addEventListener('submit',() => {
   renderLoading(true, btnProfile);
-  callServer('users/me', 'PATCH', ({
-    name: inputProfileName.value,
-    about: inputProfileSubtitle.value
-  }))
+  new Api('users/me', 'PATCH', ({name: inputProfileName.value,about: inputProfileSubtitle.value})).fetch()
     .then(res => handleProfileFormSubmit())
     .catch(err => console.error(`Ошибка: ${err.status}`))
     .finally(res => renderLoading(false, btnProfile));
@@ -155,7 +171,8 @@ Promise.all([getUserInfo, getCards])
     profileName.textContent = userData.name;
     profileDescription.textContent = userData.about;
     userId = userData._id;
-    downloadCards(cards);
+    new Card(cards, userId, popupImg ).downloadCards()
+    // downloadCards(cards);
   })
   .catch(err => console.error(`Ошибка: ${err.status}`))
   
