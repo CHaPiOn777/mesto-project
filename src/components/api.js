@@ -1,3 +1,5 @@
+import 'core-js/es/symbol';
+import 'core-js/es/object';
 export function callServer(what, method, info) {
 
   return fetch(`https://nomoreparties.co/v1/plus-cohort-9/${what}`, {

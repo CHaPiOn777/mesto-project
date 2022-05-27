@@ -1,5 +1,5 @@
 import '../style/index.css';
-
+import 'core-js/es/symbol';
 import {
   openPopup,
   closePopup,
@@ -17,7 +17,8 @@ import {
 import {
   enableValidation,
   enableObjectValidation,
-  resetValidation
+  resetValidation,
+  FormValidator
 } from './validate.js';
 
 import {
@@ -36,6 +37,7 @@ import {
   popups
 } from './modal.js';
 
+
 const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /*кнопка редкатирования профиля*/
 const popupCardButtonAdd = document.querySelector('.profile__add-button'); /*кнопка добавить попап карточки*/
 const profileIcon = document.querySelector('.profile__avatar');
@@ -46,6 +48,24 @@ const btnProfile = document.querySelector('.btn-profile');
 const btnProfileIcon = document.querySelector('.btn-profile-icon');
 export let userId;
 
+const editPopupValidation = new FormValidator(
+  enableObjectValidation,
+  formCard
+);
+
+const addPopupValidation  = new FormValidator(
+  enableObjectValidation,
+  popupProfile
+);
+
+const avatarEditPopopValidation  = new FormValidator(
+  enableObjectValidation,
+  formProfileIcon
+);
+
+avatarEditPopopValidation.enableValidation();
+editPopupValidation.enableValidation();
+addPopupValidation.enableValidation();
 
 
 
@@ -57,7 +77,7 @@ profileIcon.addEventListener('click', () => {
   openPopup(popupProfileIcon);
 
   formProfileIcon.reset();
-  resetValidation(formProfileIcon);
+  avatarEditPopopValidation._resetValidation(formProfileIcon);
 })
 
 formProfileIcon.addEventListener('submit', () => {
@@ -84,7 +104,8 @@ callServer('users/me', 'GET')
   })
   .catch(err => console.error(`Ошибка: ${err.status}`));
 
-enableValidation(enableObjectValidation);
+/* enableValidation(enableObjectValidation); */
+
 
 //открывает попап профиля
 
@@ -93,13 +114,14 @@ enableValidation(enableObjectValidation);
 popupCardButtonAdd.addEventListener('click', function () {
   openPopup(popupCard);
   formCard.reset();
-  resetValidation(formCard);
+  editPopupValidation._resetValidation(formCard);
 })
 
 popupProfileButtonEdit.addEventListener('click', function () {
   openPopup(popupProfile);
   inputProfileName.value = profileName.textContent;
   inputProfileSubtitle.value = profileDescription.textContent;
+  addPopupValidation._resetValidation(popupProfile);
 })
 
 
