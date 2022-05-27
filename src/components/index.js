@@ -4,6 +4,7 @@ import {
   openPopup,
   closePopup,
   renderLoading,
+  PopupWithForm,
   Popup
 } from './utils.js';
 
@@ -12,6 +13,11 @@ import {
   addNewCard,
   popupCard,
   formCard,
+  cards,
+  Card,
+  popupImg,
+  inputCardSubtitle,
+  inputCardName,
   downloadCards
 } from './card.js';
 
@@ -50,9 +56,32 @@ export let userId;
 
 
 
-formCard.addEventListener('submit', () => {
-  addNewCard();
-});
+// formCard.addEventListener('submit', () => {
+//   addNewCard();
+// });
+const newCard = new PopupWithForm(popupCard, {
+  formSubmitCallback: (btnCard, data) => {
+    renderLoading(true, btnCard);
+    new Api ('cards', 'POST', ({
+      link: data.subtitle,
+      name: data.name
+    })).fetch()
+      .then(res => {
+        const card = new Card (res, userId, popupImg);
+        const cardNew = card.generate();
+        cards.prepend(cardNew)
+        new Popup(popupCard).closePopup();
+        formCard.reset();
+      })
+      .catch(err => console.error(`Ошибка: ${err.status}`))
+      .finally(res => {
+        renderLoading(false, btnCard);
+      });
+  }
+})
+
+newCard.setEventListeners();
+
 
 profileIcon.addEventListener('click', () => {
 
@@ -120,7 +149,8 @@ Promise.all([getUserInfo, getCards])
     profileName.textContent = userData.name;
     profileDescription.textContent = userData.about;
     userId = userData._id;
-    downloadCards(cards);
+    new Card(cards, userId, popupImg ).downloadCards()
+    // downloadCards(cards);
   })
   .catch(err => console.error(`Ошибка: ${err.status}`))
   
