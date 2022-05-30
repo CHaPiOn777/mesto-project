@@ -1,4 +1,3 @@
-import {closeEscPopup} from './modal.js';
 import {elementImg, elementName} from './modal';
 
 
@@ -70,7 +69,7 @@ export class PopupWithForm extends Popup {
     super.setEventListeners();
     this._form.addEventListener("submit", () => {
       this._getInputValues();
-      this._formSubmit(this._submitBtn, this._data)
+      this._formSubmit(this._submitBtn, this._data);
     });
   }
   closePopup() {
@@ -78,14 +77,7 @@ export class PopupWithForm extends Popup {
     this._form.reset();
   }
 }
-/* export function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', closeEscPopup); 
-}
-export function openPopup(popup) {
-  popup.classList.add('popup_opened');
-  document.addEventListener('keydown', closeEscPopup);
-} */
+
 export function renderLoading(isLoading, btn) {
   if(isLoading) {
     btn.textContent = `${btn.id}...`

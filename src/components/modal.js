@@ -16,22 +16,9 @@ export const inputProfileName = formProfile.elements.name;
 export const inputProfileSubtitle = formProfile.elements.subtitle;
 export const popups = document.querySelectorAll('.popup');
 
+//получение данных профиля
 
-export function handleProfileFormSubmit(evt) {
-  profileName.textContent = inputProfileName.value;
-  profileDescription.textContent = inputProfileSubtitle.value;
-  new Popup(popupProfile).closePopup();
-}
-export let getUserInfo = new Promise ((resolve, reject) => {
-  
-  new Api('users/me', 'GET').fetch()
-  .then((result) => {
-    resolve(result)
-  })
-  .catch(err => reject(console.error(`Ошибка: ${err.status}`)))
-})
 
-//функция добавляет адрес ссылки картинки и название в расширенную картинку
 
 
 

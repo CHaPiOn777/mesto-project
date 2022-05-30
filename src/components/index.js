@@ -1,8 +1,6 @@
 import '../style/index.css';
 import 'core-js/es/symbol';
 import {
-  openPopup,
-  closePopup,
   renderLoading,
   PopupWithForm,
   Popup
@@ -10,36 +8,29 @@ import {
 
 import {
   getCards,
-  addNewCard,
   popupCard,
   formCard,
   cards,
   Card,
-  popupImg,
-  inputCardSubtitle,
-  inputCardName,
-  downloadCards
+  popupImg
 } from './card.js';
 
 import {
-  enableValidation,
   enableObjectValidation,
-  resetValidation,
   FormValidator
 } from './validate.js';
 
 import {
-  callServer,
   Api
 } from './api.js';
+import {
+  Section
+} from './section.js';
 
 import {
-  getUserInfo,
-  handleProfileFormSubmit,
   popupProfile,
   profileName,
   profileDescription,
-  formProfile,
   inputProfileSubtitle,
   inputProfileName
 } from './modal.js';
@@ -51,12 +42,49 @@ const popupCardButtonAdd = document.querySelector('.profile__add-button'); /*к�
 const profileIcon = document.querySelector('.profile__avatar');
 const popupProfileIcon = document.querySelector('.popup__profile-icon');
 const formProfileIcon = document.forms.popupProfileIcon;
-const inputProfileIcon = formProfileIcon.elements.subtitle;
-const btnProfile = document.querySelector('.btn-profile');
-const btnProfileIcon = document.querySelector('.btn-profile-icon');
 export let userId;
 
+
+let getUserInfo = new Promise ((resolve, reject) => {
+  new Api('users/me', 'GET').fetch()
+  .then((result) => {
+    resolve(result)
+  })
+  .catch(err => reject(console.error(`Ошибка: ${err.status}`)))
+})
+
+
+//загружает аватарку пользователя
+new Api('users/me', 'GET').fetch()
+  .then((result) => {
+    userInfo.setUserAvatar(result);
+  })
+  .catch(err => console.error(`Ошибка: ${err.status}`));
+
+//Создание карточки
+const createCard = (data) => {
+  const card = new Card(data, userId, popupImg);
+  const createCard = card.generate();
+  return createCard
+}
+//Загрузка карточки
+const downloadCard = new Section({
+    renderer: (item) => {
+      downloadCard.addItems(createCard(item));
+    }
+  }, '.cards') 
+
+//загружает данные о пользователе и карточки
+Promise.all([getUserInfo, getCards])
+  .then(([userData, cards]) => {
+    userInfo.setUserInfo(userData)
+    userId = userData._id;
+    downloadCard.renderItems(cards);
+  })
+  .catch(err => console.error(`Ошибка: ${err.status}`))
+
 const userInfo = new UserInfo(profileName, profileDescription, profileIcon);
+
 const editPopupValidation = new FormValidator(
   enableObjectValidation,
   formCard
@@ -67,7 +95,6 @@ const addPopupValidation  = new FormValidator(
   popupProfile
 );
 
-
 const avatarEditPopopValidation  = new FormValidator(
   enableObjectValidation,
   formProfileIcon
@@ -77,11 +104,26 @@ avatarEditPopopValidation.enableValidation();
 editPopupValidation.enableValidation();
 addPopupValidation.enableValidation();
 
+//сохраняет введенные данные профиля
+const newInfoProfile = new PopupWithForm(popupProfile, {
+  formSubmitCallback: (btnProfile, data) => {
+    renderLoading(true, btnProfile);
+    new Api('users/me', 'PATCH', ({
+      name: data.name,
+      about: data.subtitle
+    })).fetch()
+      .then(res => {
+        profileName.textContent = res.name;
+        profileDescription.textContent = res.about;
+        newInfoProfile.closePopup();
+      })
+      .catch(err => console.error(`Ошибка: ${err.status}`))
+      .finally(res => renderLoading(false, btnProfile));
+  }
+})
+newInfoProfile.setEventListeners();
 
-
-// formCard.addEventListener('submit', () => {
-//   addNewCard();
-// });
+//сохраняет введенные данные карточки
 const newCard = new PopupWithForm(popupCard, {
   formSubmitCallback: (btnCard, data) => {
     renderLoading(true, btnCard);
@@ -93,8 +135,7 @@ const newCard = new PopupWithForm(popupCard, {
         const card = new Card (res, userId, popupImg);
         const cardNew = card.generate();
         cards.prepend(cardNew)
-        new Popup(popupCard).closePopup();
-        formCard.reset();
+        newCard.closePopup();
       })
       .catch(err => console.error(`Ошибка: ${err.status}`))
       .finally(res => {
@@ -102,45 +143,32 @@ const newCard = new PopupWithForm(popupCard, {
       });
   }
 })
-
 newCard.setEventListeners();
 
+//сохраняет введенные данные аватара профиля
+const newProfileIcon = new PopupWithForm(popupProfileIcon, {
+  formSubmitCallback: (btnProfileIcon, data) => {
+    renderLoading(true, btnProfileIcon);
+    new Api('users/me/avatar', 'PATCH', ({avatar: data.subtitle})).fetch()
+      .then(res => {
+        profileIcon.style.backgroundImage = `url(${res.avatar})`;
+        newProfileIcon.closePopup();
+      })
+      .catch(err => console.error(`Ошибка: ${err.status}`))
+      .finally(res => {
+        renderLoading(false, btnProfileIcon);
+      });
+  }
+})
+newProfileIcon.setEventListeners();
 
+//открывает попап аватара 
 profileIcon.addEventListener('click', () => {
-
   new Popup(popupProfileIcon).openPopup();
 
   formProfileIcon.reset();
   avatarEditPopopValidation._resetValidation(formProfileIcon);
 })
-
-formProfileIcon.addEventListener('submit', () => {
-  renderLoading(true, btnProfileIcon);
-    new Api('users/me/avatar', 'PATCH', ({avatar: inputProfileIcon.value})).fetch()
-      .then(res => {
-        profileIcon.style.backgroundImage = `url(${inputProfileIcon.value})`;
-        const popup = new Popup(popupProfileIcon);
-        popup.closePopup();
-      })
-      .catch(err => console.error(`Ошибка: ${err.status}`))
-      .finally(res => {
-        renderLoading(false, btnProfileIcon);
-      
-      });
-
-});
-
-new Api('users/me', 'GET').fetch()
-  .then((result) => {
-    userInfo.setUserAvatar(result);
-  })
-  .catch(err => console.error(`Ошибка: ${err.status}`));
-
-/* enableValidation(enableObjectValidation); */
-
-
-//открывает попап профиля
-
 
 //открывает попап карточек
 popupCardButtonAdd.addEventListener('click', function () {
@@ -148,33 +176,10 @@ popupCardButtonAdd.addEventListener('click', function () {
   formCard.reset();
   editPopupValidation._resetValidation(formCard);
 })
-
+//открывает попап профиля
 popupProfileButtonEdit.addEventListener('click', function () {
   new Popup(popupProfile).openPopup();
   const data = userInfo.getUserInfo();
   inputProfileName.value = data.name;
   inputProfileSubtitle.value = data.job;
 })
-
-
-
-
-//сохраняет введенные данные в попап профиля
-formProfile.addEventListener('submit',() => {
-  renderLoading(true, btnProfile);
-  new Api('users/me', 'PATCH', ({name: inputProfileName.value,about: inputProfileSubtitle.value})).fetch()
-    .then(res => handleProfileFormSubmit())
-    .catch(err => console.error(`Ошибка: ${err.status}`))
-    .finally(res => renderLoading(false, btnProfile));
-
-})
-
-Promise.all([getUserInfo, getCards])
-  .then(([userData, cards]) => {
-    userInfo.setUserInfo(userData)
-    userId = userData._id;
-    new Card(cards, userId, popupImg ).downloadCards()
-    // downloadCards(cards);
-  })
-  .catch(err => console.error(`Ошибка: ${err.status}`))
-  
