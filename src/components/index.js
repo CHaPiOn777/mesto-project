@@ -3,17 +3,21 @@ import 'core-js/es/symbol';
 import {
   renderLoading,
   PopupWithForm,
+  PopupWithImage,
   Popup
 } from './utils.js';
-
 import {
+  Card,
   getCards,
+} from './card.js'
+import {
+
   popupCard,
   formCard,
   cards,
-  Card,
+  cardTemplate,
   popupImg
-} from './card.js';
+} from './constants.js';
 
 import {
   enableObjectValidation,
@@ -45,7 +49,7 @@ const formProfileIcon = document.forms.popupProfileIcon;
 export let userId;
 
 
-let getUserInfo = new Promise ((resolve, reject) => {
+const getUserInfo = new Promise ((resolve, reject) => {
   new Api('users/me', 'GET').fetch()
   .then((result) => {
     resolve(result)
@@ -61,9 +65,11 @@ new Api('users/me', 'GET').fetch()
   })
   .catch(err => console.error(`Ошибка: ${err.status}`));
 
+
+
 //Создание карточки
 const createCard = (data) => {
-  const card = new Card(data, userId, popupImg);
+  const card = new Card(data, userId, popupImg, cardTemplate, handleCardClick);
   const createCard = card.generate();
   return createCard
 }
@@ -73,6 +79,12 @@ const downloadCard = new Section({
       downloadCard.addItems(createCard(item));
     }
   }, '.cards') 
+
+//функция открывает попа с изображением
+function handleCardClick(name, link) {
+  const img = new PopupWithImage(popupImg)
+  img.openPopup(name, link)
+}  
 
 //загружает данные о пользователе и карточки
 Promise.all([getUserInfo, getCards])
@@ -132,7 +144,7 @@ const newCard = new PopupWithForm(popupCard, {
       name: data.name
     })).fetch()
       .then(res => {
-        const card = new Card (res, userId, popupImg);
+        const card = new Card (res, userId, popupImg, cardTemplate, handleCardClick);
         const cardNew = card.generate();
         cards.prepend(cardNew)
         newCard.closePopup();

@@ -4,6 +4,7 @@ import {elementImg, elementName} from './modal';
 export class Popup  {
   constructor(selector) {
     this._selector = selector;
+    console.log(this._selector);
   }
   closePopup() {
     this._selector.classList.remove('popup_opened');
@@ -35,16 +36,15 @@ export class Popup  {
   }
 }
 export class PopupWithImage extends Popup {
-  constructor(selector, link, name) {
+  constructor(selector) {
     super(selector);
+  }
+  openPopup(name, link) {
+    super.openPopup();
     this.link = link;
     this.name = name;
-  }
-  openPopup() {
-    super.openPopup();
     elementImg.setAttribute('src', this.link);
     elementImg.setAttribute('alt',  this.name);
-  
     elementName.textContent = this.name
   }
 }

@@ -1,44 +1,16 @@
-// функция создания карточки
-import {
-  PopupWithImage
-} from './utils.js';
 import {
   Api
 } from './api.js';
 
-export const popupImg = document.querySelector('.card-img'); /*блок формы редктирования картинки*/
-export const cardTemplate = document.querySelector('#card-template').content;
-
-export const formCard = document.forms.popupCard; /*форма карточки*/
-export const inputCardName = formCard.elements.name;
-export const inputCardSubtitle = formCard.elements.subtitle;
-
-export const cards = document.querySelector('.cards'); /*карточки*/
-export const popupCard = document.querySelector('.popup__card'); /*блок формы редктирования профиля*/
-//создаем класс для создания карточки
-
-
 export class Card {
-  constructor(data, userId, popupImg) {
+  constructor(data, userId, popupImg, cardTemplate, handleCardClick) {
     this._data = data,
     this._userId = userId,
-    this._cards = document.querySelector('.cards'),
-    this._cardTemplate = document.querySelector('#card-template').content,
-    this._popupImg = popupImg
+    this._cardTemplate = cardTemplate,
+    this._popupImg = popupImg,
+    this._handleCardClick = handleCardClick
   }
 
-  //загрузка карточек
-  downloadCards() {
-    for (let i = 0; i < this._data.length; i++) {
-
-      //создаем экземпляр класса карточек и создание разметок для всех карточек
-      const card = new Card (this._data[i], this._userId, popupImg);
-      const cardNew = card.generate();
-
-      //вставить полученную разметку карточек
-      this._cards.append(cardNew);
-    }
-  }
 
   //создание разметки карточки
   generate() {
@@ -81,7 +53,7 @@ export class Card {
 
   //поставить лайк
   _putLike() {
-      if (!this._element.querySelector('.card__like').classList.contains('card__like_active')) {
+      if (!this._cardLike.classList.contains('card__like_active')) {
         new Api(`cards/likes/${this._data._id}`, 'PUT').fetch()
           .then(res => {
             this._cardLike.classList.toggle('card__like_active');
@@ -103,7 +75,7 @@ export class Card {
   _checkMyLike() {
     this._data.likes.forEach(item => {
       if (item._id == this._userId) {
-        this._element.querySelector('.card__like').classList.add('card__like_active')
+        this._cardLike.classList.add('card__like_active')
       }
     })
   }
@@ -112,13 +84,13 @@ export class Card {
   _setEventListener() {
 
     //обработчик лайка
-    this._element.querySelector('.card__like').addEventListener('click', () => {
+    this._cardLike.addEventListener('click', () => {
       this._putLike();
     })
 
     //обработчик открытия изображения
     this._cardImg.addEventListener('click', () => {
-      new PopupWithImage(this._popupImg, this._data.link, this._data.name ).openPopup();
+      this._handleCardClick(this._data.name , this._data.link);
   })
 
   //удаляет карточку при нажатии на иконку
@@ -132,7 +104,7 @@ export class Card {
   }
 }
 
-export let getCards =  new Promise((resolve, reject) => {
+export const getCards =  new Promise((resolve, reject) => {
   new Api('cards', 'GET').fetch()
   .then((result) => {
     resolve(result)
