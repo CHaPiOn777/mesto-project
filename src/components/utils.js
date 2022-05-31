@@ -4,7 +4,6 @@ import {elementImg, elementName} from './modal';
 export class Popup  {
   constructor(selector) {
     this._selector = selector;
-    console.log(this._selector);
   }
   closePopup() {
     this._selector.classList.remove('popup_opened');

@@ -144,9 +144,8 @@ const newCard = new PopupWithForm(popupCard, {
       name: data.name
     })).fetch()
       .then(res => {
-        const card = new Card (res, userId, popupImg, cardTemplate, handleCardClick);
-        const cardNew = card.generate();
-        cards.prepend(cardNew)
+        const card = createCard(res);
+        new Section({}, '.cards').prependCard(card);
         newCard.closePopup();
       })
       .catch(err => console.error(`Ошибка: ${err.status}`))

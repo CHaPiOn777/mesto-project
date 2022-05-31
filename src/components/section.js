@@ -9,6 +9,10 @@ export class Section {
       this._renderer(item);
     })
   }
+  prependCard(elem) {
+    console.log(this._container);
+    this._container.prepend(elem)
+  }
   addItems(elem) {
     this._container.append(elem)
   }
