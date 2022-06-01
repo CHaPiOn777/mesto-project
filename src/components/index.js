@@ -97,6 +97,28 @@ Promise.all([getUserInfo, getCards])
 
 const userInfo = new UserInfo(profileName, profileDescription, profileIcon);
 
+/* const formValidators = {}
+// Включение валидации
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(formElement, config)
+// получаем данные из атрибута `name` у формы
+    const formName = formElement.getAttribute('name')
+    
+   // вот тут в объект записываем под именем формы 
+    formValidators[formName] = validator;
+   validator.enableValidation();
+  });
+};
+enableValidation(config); 
+
+formValidators[ profileForm.getAttribute('name') ].resetValidation()
+
+// или можно использовать строку (ведь Вы знаете, какой атрибут `name` у каждой формы)
+formValidators['profile-form'].resetValidation()
+??????????????? */
+
 const editPopupValidation = new FormValidator(
   enableObjectValidation,
   formCard

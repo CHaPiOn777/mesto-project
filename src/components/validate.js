@@ -18,17 +18,15 @@ export class FormValidator{
     this._inactiveButtonClass = enableObject.inactiveButtonClass;
     this._inputErrorClass = enableObject.inputErrorClass;
     this._errorClass = enableObject.errorClass;
-    this._allForm = Array.from(document.querySelectorAll(this._formSelector));
+    this._btn = this._popupForm.querySelector(this._submitButtonSelector);
+    this._inputList = Array.from(this._popupForm.querySelectorAll(this._inputSelector));
   }
-  _resetValidation(form) {
-    
-    this._btn = form.querySelector(this._submitButtonSelector);
+  _resetValidation() {
     if(this._btn) {
       this._toggleButtonState();
     }
   }
   _hasInvalidInput() {
-    this._inputList = Array.from(this._popupForm.querySelectorAll(this._inputSelector));
     // проходим по этому массиву методом some
     return this._inputList.some((inputElement) => {
       // Если поле не валидно, колбэк вернёт true
@@ -40,7 +38,6 @@ export class FormValidator{
   }; 
   _toggleButtonState() {
     // Если есть хотя бы один невалидный инпут
-    this._btn = this._popupForm.querySelector(this._submitButtonSelector);
     if (this._hasInvalidInput()) {
       this._btn.disabled = true;
       this._btn.classList.add(this._inactiveButtonClass);
@@ -60,33 +57,29 @@ export class FormValidator{
   }
   
   _showInputError( inputElement, textError) {
-    this._errorElement = this._popupForm.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(this._inputErrorClass);
     this._errorElement.textContent = textError;
     this._errorElement.classList.add(this._errorClass);
   }
 
   _hideInputError( inputElement) {   
-    this._errorElement = this._popupForm.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.remove(this._inputErrorClass);
     this._errorElement.textContent = '';
     this._errorElement.classList.remove(this._errorClass);
   }
   
   enableValidation() {
-    this._allForm.forEach((item) => {
-      item.addEventListener('submit', (evt) => {
-        evt.preventDefault();
-      });
       this._setEventListeners();
-    });
   };
   
   _setEventListeners() {
+    this._popupForm.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+    });
     this._toggleButtonState();
-    this._inputList = Array.from(this._popupForm.querySelectorAll(this._inputSelector));
     this._inputList.forEach((item) => {
       item.addEventListener('input', () => {
+        this._errorElement = this._popupForm.querySelector(`.${item.id}-error`);
         this._isValid(item);
         this._toggleButtonState();
       })
