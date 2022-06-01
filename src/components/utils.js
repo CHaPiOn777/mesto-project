@@ -1,58 +1,59 @@
-import {elementImg, elementName} from './modal';
+
 
 
 export class Popup  {
-  constructor(selector) {
-    this._selector = selector;
+  constructor(popupSelector) {
+    this._popup = document.querySelector(popupSelector);
+    this._selector = popupSelector;
+    console.log(popupSelector);
+
   }
   closePopup() {
-    this._selector.classList.remove('popup_opened');
+    this._popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', this._handleEscClose); 
   }
   openPopup() {    
-    this._selector.classList.add('popup_opened');
+    this._popup.classList.add('popup_opened');
     document.addEventListener('keydown', this._handleEscClose);
     this.setEventListeners();
   }
-  _handleEscClose (evt) {
+  _handleEscClose = (evt) => {
     if (evt.key === 'Escape') {
-      const openedPopup = document.querySelector('.popup_opened');
-      const popupEsc = new Popup(openedPopup);
-      popupEsc.closePopup();
+      this.closePopup();
     }
   }
   setEventListeners(){
-    this._selector.addEventListener('mousedown', (evt) => {
+    this._popup.addEventListener('mousedown', (evt) => {
         if(evt.target.classList.contains('popup_opened')) {
-          const popupItem = new Popup(this._selector);
-          popupItem.closePopup();
+          this.closePopup();
         }
         if(evt.target.classList.contains('popup__img')) {
-          const popupItem = new Popup(this._selector);
-          popupItem.closePopup();
+          this.closePopup();
         }
       })
   }
 }
 export class PopupWithImage extends Popup {
-  constructor(selector) {
-    super(selector);
+  constructor(popupSelector) {
+    super(popupSelector);
+    this._elementImg = document.querySelector('.card-img__image');
+    this._elementName = document.querySelector('.card-img__subtitle');
   }
   openPopup(name, link) {
     super.openPopup();
     this.link = link;
     this.name = name;
-    elementImg.setAttribute('src', this.link);
-    elementImg.setAttribute('alt',  this.name);
-    elementName.textContent = this.name
+    this._elementImg.setAttribute('src', this.link);
+    this._elementImg.setAttribute('alt',  this.name);
+    this._elementName.textContent = this.name
   }
 }
 export class PopupWithForm extends Popup {
-  constructor(selector, {formSubmitCallback}) {
-    super(selector);
+  constructor(popupSelector, {formSubmitCallback}) {
+    super(popupSelector);
     this._formSubmitCallback = formSubmitCallback;
     this._formSubmit = this._formSubmitCallback.bind(this);
-    this._form = this._selector.querySelector('.popup__form');
+    this._form = this._popup.querySelector('.popup__form');
     this._inputs = Array.from(this._form.querySelectorAll('.popup__text'));
     this._submitBtn = this._form.querySelector('.popup__text-button');
   }

@@ -82,7 +82,7 @@ const downloadCard = new Section({
 
 //функция открывает попа с изображением
 function handleCardClick(name, link) {
-  const img = new PopupWithImage(popupImg)
+  const img = new PopupWithImage('.card-img')
   img.openPopup(name, link)
 }  
 
@@ -117,7 +117,7 @@ editPopupValidation.enableValidation();
 addPopupValidation.enableValidation();
 
 //сохраняет введенные данные профиля
-const newInfoProfile = new PopupWithForm(popupProfile, {
+const newInfoProfile = new PopupWithForm('.popup__profile', {
   formSubmitCallback: (btnProfile, data) => {
     renderLoading(true, btnProfile);
     new Api('users/me', 'PATCH', ({
@@ -136,7 +136,7 @@ const newInfoProfile = new PopupWithForm(popupProfile, {
 newInfoProfile.setEventListeners();
 
 //сохраняет введенные данные карточки
-const newCard = new PopupWithForm(popupCard, {
+const newCard = new PopupWithForm('.popup__card', {
   formSubmitCallback: (btnCard, data) => {
     renderLoading(true, btnCard);
     new Api ('cards', 'POST', ({
@@ -157,7 +157,7 @@ const newCard = new PopupWithForm(popupCard, {
 newCard.setEventListeners();
 
 //сохраняет введенные данные аватара профиля
-const newProfileIcon = new PopupWithForm(popupProfileIcon, {
+const newProfileIcon = new PopupWithForm('.popup__profile-icon', {
   formSubmitCallback: (btnProfileIcon, data) => {
     renderLoading(true, btnProfileIcon);
     new Api('users/me/avatar', 'PATCH', ({avatar: data.subtitle})).fetch()
@@ -175,21 +175,20 @@ newProfileIcon.setEventListeners();
 
 //открывает попап аватара 
 profileIcon.addEventListener('click', () => {
-  new Popup(popupProfileIcon).openPopup();
-
+  new PopupWithForm('.popup__profile-icon', {formSubmitCallback: () =>{}}).openPopup();
   formProfileIcon.reset();
   avatarEditPopopValidation._resetValidation(formProfileIcon);
 })
 
 //открывает попап карточек
 popupCardButtonAdd.addEventListener('click', function () {
-  new Popup(popupCard).openPopup();
+  new PopupWithForm('.popup__card', {formSubmitCallback: () =>{}}).openPopup();
   formCard.reset();
   editPopupValidation._resetValidation(formCard);
 })
 //открывает попап профиля
 popupProfileButtonEdit.addEventListener('click', function () {
-  new Popup(popupProfile).openPopup();
+  new PopupWithForm('.popup__profile', {formSubmitCallback: () =>{}}).openPopup();
   const data = userInfo.getUserInfo();
   inputProfileName.value = data.name;
   inputProfileSubtitle.value = data.job;
