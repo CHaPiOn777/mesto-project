@@ -1,10 +1,7 @@
 import {
   Popup
 } from './utils.js';
-import {
-  callServer,
-  Api
-} from './api.js';
+
 
 export const elementImg = document.querySelector('.card-img__image');//место ссылки картинки
 export const elementName = document.querySelector('.card-img__subtitle');//место имени картинки

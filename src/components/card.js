@@ -1,7 +1,7 @@
 import {
   Api
 } from './api.js';
-
+import {api} from './index.js';
 export class Card {
   constructor(data, userId, popupImg, cardTemplate, handleCardClick) {
     this._data = data,
@@ -54,14 +54,14 @@ export class Card {
   //поставить лайк
   _putLike() {
       if (!this._cardLike.classList.contains('card__like_active')) {
-        new Api(`cards/likes/${this._data._id}`, 'PUT').fetch()
+        api.addCardLike(`${this._data._id}`)
           .then(res => {
             this._cardLike.classList.toggle('card__like_active');
             this._like.textContent = res.likes.length;
           })
           .catch(err => console.error(`Ошибка: ${err.status}`))
       } else {
-        new Api(`cards/likes/${this._data._id}`, 'DELETE').fetch()
+        api.deleteCardLike(`${this._data._id}`)
           .then(res => {
             this._cardLike.classList.toggle('card__like_active');
             this._like.textContent = res.likes.length;
@@ -95,7 +95,7 @@ export class Card {
 
   //удаляет карточку при нажатии на иконку
     this._remove.addEventListener('click', () => {
-      new Api(`cards/${this._data._id}`, 'DELETE').fetch()
+      api.deleteCard(`${this._data._id}`)
         .then(() => {
           this._element.remove();
         })
@@ -104,11 +104,5 @@ export class Card {
   }
 }
 
-export const getCards =  new Promise((resolve, reject) => {
-  new Api('cards', 'GET').fetch()
-  .then((result) => {
-    resolve(result)
-  })
-  .catch(err => reject(console.error(`Ошибка: ${err.status}`)))
-})
+
 

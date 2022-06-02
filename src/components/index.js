@@ -24,9 +24,7 @@ import {
   FormValidator
 } from './validate.js';
 
-import {
-  Api
-} from './api.js';
+
 import {
   Section
 } from './section.js';
@@ -39,6 +37,7 @@ import {
   inputProfileName
 } from './modal.js';
 import UserInfo from './userInfo.js';
+import Api from './api.js';
 
 
 const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /*кнопка редкатирования профиля*/
@@ -48,24 +47,19 @@ const popupProfileIcon = document.querySelector('.popup__profile-icon');
 const formProfileIcon = document.forms.popupProfileIcon;
 export let userId;
 
+export const api = new Api({
+  serverUrl: "https://nomoreparties.co/v1/plus-cohort-9/",
+  token: "4aa45065-cf66-4840-9e29-974284b6da3e",
+});
 
-const getUserInfo = new Promise ((resolve, reject) => {
-  new Api('users/me', 'GET').fetch()
-  .then((result) => {
-    resolve(result)
-  })
-  .catch(err => reject(console.error(`Ошибка: ${err.status}`)))
-})
-
+const initialData = [api.getUserInfo(), api.getInitialCards()];
 
 //загружает аватарку пользователя
-new Api('users/me', 'GET').fetch()
+api.getAva()
   .then((result) => {
     userInfo.setUserAvatar(result);
   })
   .catch(err => console.error(`Ошибка: ${err.status}`));
-
-
 
 //Создание карточки
 const createCard = (data) => {
@@ -87,7 +81,7 @@ function handleCardClick(name, link) {
 }  
 
 //загружает данные о пользователе и карточки
-Promise.all([getUserInfo, getCards])
+Promise.all(initialData)
   .then(([userData, cards]) => {
     userInfo.setUserInfo(userData)
     userId = userData._id;
@@ -96,28 +90,6 @@ Promise.all([getUserInfo, getCards])
   .catch(err => console.error(`Ошибка: ${err.status}`))
 
 const userInfo = new UserInfo(profileName, profileDescription, profileIcon);
-
-/* const formValidators = {}
-// Включение валидации
-const enableValidation = (config) => {
-  const formList = Array.from(document.querySelectorAll(config.formSelector))
-  formList.forEach((formElement) => {
-    const validator = new FormValidator(formElement, config)
-// получаем данные из атрибута `name` у формы
-    const formName = formElement.getAttribute('name')
-    
-   // вот тут в объект записываем под именем формы 
-    formValidators[formName] = validator;
-   validator.enableValidation();
-  });
-};
-enableValidation(config); 
-
-formValidators[ profileForm.getAttribute('name') ].resetValidation()
-
-// или можно использовать строку (ведь Вы знаете, какой атрибут `name` у каждой формы)
-formValidators['profile-form'].resetValidation()
-??????????????? */
 
 const editPopupValidation = new FormValidator(
   enableObjectValidation,
@@ -142,10 +114,7 @@ addPopupValidation.enableValidation();
 const newInfoProfile = new PopupWithForm(popupProfile, {
   formSubmitCallback: (btnProfile, data) => {
     renderLoading(true, btnProfile);
-    new Api('users/me', 'PATCH', ({
-      name: data.name,
-      about: data.subtitle
-    })).fetch()
+    api.editProfile(data)
       .then(res => {
         profileName.textContent = res.name;
         profileDescription.textContent = res.about;
@@ -161,10 +130,7 @@ newInfoProfile.setEventListeners();
 const newCard = new PopupWithForm(popupCard, {
   formSubmitCallback: (btnCard, data) => {
     renderLoading(true, btnCard);
-    new Api ('cards', 'POST', ({
-      link: data.subtitle,
-      name: data.name
-    })).fetch()
+    api.addNewCard(data)
       .then(res => {
         const card = createCard(res);
         new Section({}, '.cards').prependCard(card);
@@ -182,7 +148,7 @@ newCard.setEventListeners();
 const newProfileIcon = new PopupWithForm(popupProfileIcon, {
   formSubmitCallback: (btnProfileIcon, data) => {
     renderLoading(true, btnProfileIcon);
-    new Api('users/me/avatar', 'PATCH', ({avatar: data.subtitle})).fetch()
+    api.editAvatar(data)
       .then(res => {
         profileIcon.style.backgroundImage = `url(${res.avatar})`;
         newProfileIcon.closePopup();
