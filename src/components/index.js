@@ -24,9 +24,7 @@ import {
   FormValidator
 } from './validate.js';
 
-import {
-  Api
-} from './api.js';
+
 import {
   Section
 } from './section.js';
@@ -39,6 +37,7 @@ import {
   inputProfileName
 } from './modal.js';
 import UserInfo from './userInfo.js';
+import Api from './api.js';
 
 
 const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /*кнопка редкатирования профиля*/
@@ -48,24 +47,19 @@ const popupProfileIcon = document.querySelector('.popup__profile-icon');
 const formProfileIcon = document.forms.popupProfileIcon;
 export let userId;
 
+export const api = new Api({
+  serverUrl: "https://nomoreparties.co/v1/plus-cohort-9/",
+  token: "4aa45065-cf66-4840-9e29-974284b6da3e",
+});
 
-const getUserInfo = new Promise ((resolve, reject) => {
-  new Api('users/me', 'GET').fetch()
-  .then((result) => {
-    resolve(result)
-  })
-  .catch(err => reject(console.error(`Ошибка: ${err.status}`)))
-})
-
+const initialData = [api.getUserInfo(), api.getInitialCards()];
 
 //загружает аватарку пользователя
-new Api('users/me', 'GET').fetch()
+api.getAva()
   .then((result) => {
     userInfo.setUserAvatar(result);
   })
   .catch(err => console.error(`Ошибка: ${err.status}`));
-
-
 
 //Создание карточки
 const createCard = (data) => {
@@ -87,7 +81,7 @@ function handleCardClick(name, link) {
 }  
 
 //загружает данные о пользователе и карточки
-Promise.all([getUserInfo, getCards])
+Promise.all(initialData)
   .then(([userData, cards]) => {
     userInfo.setUserInfo(userData)
     userId = userData._id;
@@ -120,10 +114,7 @@ addPopupValidation.enableValidation();
 const newInfoProfile = new PopupWithForm('.popup__profile', {
   formSubmitCallback: (btnProfile, data) => {
     renderLoading(true, btnProfile);
-    new Api('users/me', 'PATCH', ({
-      name: data.name,
-      about: data.subtitle
-    })).fetch()
+    api.editProfile(data)
       .then(res => {
         profileName.textContent = res.name;
         profileDescription.textContent = res.about;
@@ -139,10 +130,7 @@ newInfoProfile.setEventListeners();
 const newCard = new PopupWithForm('.popup__card', {
   formSubmitCallback: (btnCard, data) => {
     renderLoading(true, btnCard);
-    new Api ('cards', 'POST', ({
-      link: data.subtitle,
-      name: data.name
-    })).fetch()
+    api.addNewCard(data)
       .then(res => {
         const card = createCard(res);
         new Section({}, '.cards').prependCard(card);
@@ -160,7 +148,7 @@ newCard.setEventListeners();
 const newProfileIcon = new PopupWithForm('.popup__profile-icon', {
   formSubmitCallback: (btnProfileIcon, data) => {
     renderLoading(true, btnProfileIcon);
-    new Api('users/me/avatar', 'PATCH', ({avatar: data.subtitle})).fetch()
+    api.editAvatar(data)
       .then(res => {
         profileIcon.style.backgroundImage = `url(${res.avatar})`;
         newProfileIcon.closePopup();

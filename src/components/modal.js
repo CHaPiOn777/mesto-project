@@ -1,10 +1,7 @@
 import {
   Popup
 } from './utils.js';
-import {
-  callServer,
-  Api
-} from './api.js';
+
 
 export const popupProfile = document.querySelector('.popup__profile');/*блок формы редктирования карточки*/
 export const profileName = document.querySelector('.profile__title');/*имя профиля*/
