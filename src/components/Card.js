@@ -1,14 +1,11 @@
-import {
-  Api
-} from './Api.js';
-import {api} from './index.js';
 export class Card {
-  constructor(data, userId, popupImg, cardTemplate, handleCardClick) {
+  constructor(data, userId, popupImg, cardTemplate, handleCardClick, api) {
     this._data = data,
     this._userId = userId,
     this._cardTemplate = cardTemplate,
     this._popupImg = popupImg,
-    this._handleCardClick = handleCardClick
+    this._handleCardClick = handleCardClick,
+    this._api = api
   }
 
 
@@ -54,14 +51,14 @@ export class Card {
   //поставить лайк
   _putLike() {
       if (!this._cardLike.classList.contains('card__like_active')) {
-        api.addCardLike(`${this._data._id}`)
+        this._api.addCardLike(`${this._data._id}`)
           .then(res => {
             this._cardLike.classList.toggle('card__like_active');
             this._like.textContent = res.likes.length;
           })
           .catch(err => console.error(`Ошибка: ${err.status}`))
       } else {
-        api.deleteCardLike(`${this._data._id}`)
+        this._api.deleteCardLike(`${this._data._id}`)
           .then(res => {
             this._cardLike.classList.toggle('card__like_active');
             this._like.textContent = res.likes.length;
@@ -95,7 +92,7 @@ export class Card {
 
   //удаляет карточку при нажатии на иконку
     this._remove.addEventListener('click', () => {
-      api.deleteCard(`${this._data._id}`)
+      this._api.deleteCard(`${this._data._id}`)
         .then(() => {
           this._element.remove();
         })

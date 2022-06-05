@@ -21,7 +21,7 @@ export class FormValidator{
     this._btn = this._popupForm.querySelector(this._submitButtonSelector);
     this._inputList = Array.from(this._popupForm.querySelectorAll(this._inputSelector));
   }
-  _resetValidation() {
+  resetValidation() {
     if(this._btn) {
       this._toggleButtonState();
     }

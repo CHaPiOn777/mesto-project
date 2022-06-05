@@ -3,6 +3,10 @@ export default class Api {
   constructor(data) {
     this._baseUrl = data.serverUrl;
     this._token = data.token;
+    this._headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      authorization: this._token,
+    };
   }
   
   //* Проверка статуса запроса
@@ -20,40 +24,21 @@ export default class Api {
   getUserInfo() {
     return fetch(`${this._baseUrl}users/me`, {
       method: "GET",
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        authorization: this._token,
-      },
-    }).then((res) => this._requestResult(res));
-  }
-  //загружает аватарку пользователя
-  getAva(){
-    return fetch(`${this._baseUrl}users/me`, {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        authorization: this._token,
-      },
+      headers: this._headers,
     }).then((res) => this._requestResult(res));
   }
   //* - Запрос изначальных карточек
   getInitialCards() {
     return fetch(`${this._baseUrl}cards`, {
       method: "GET",
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        authorization: this._token,
-      },
+      headers: this._headers,
     }).then((res) => this._requestResult(res));
   }
 
   editAvatar(data) {
     return fetch(`${this._baseUrl}users/me/avatar`, {
       method: "PATCH",
-      headers: {
-        authorization: this._token,
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
       body: JSON.stringify({
         avatar: data.subtitle,
       }),
@@ -64,10 +49,7 @@ export default class Api {
   editProfile(data) {
     return fetch(`${this._baseUrl}users/me`, {
       method: "PATCH",
-      headers: {
-        authorization: this._token,
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: data.name,
         about: data.subtitle,
@@ -79,10 +61,7 @@ export default class Api {
   addNewCard(data) {
     return fetch(`${this._baseUrl}cards`, {
       method: "POST",
-      headers: {
-        authorization: this._token,
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
       body: JSON.stringify({
         name: data.name,
         link: data.subtitle,
@@ -94,9 +73,7 @@ export default class Api {
   deleteCard(data) {
     return fetch(`${this._baseUrl}cards/${data}`, {
       method: "DELETE",
-      headers: {
-        authorization: this._token,
-      },
+      headers: this._headers,
     }).then((res) => this._requestResult(res));
   }
 
@@ -104,9 +81,7 @@ export default class Api {
   addCardLike(data) {
     return fetch(`${this._baseUrl}cards/likes/${data}`, {
       method: "PUT",
-      headers: {
-        authorization: this._token,
-      },
+      headers: this._headers,
     }).then((res) => this._requestResult(res));
   }
 
@@ -114,9 +89,7 @@ export default class Api {
   deleteCardLike(data) {
     return fetch(`${this._baseUrl}cards/likes/${data}`, {
       method: "DELETE",
-      headers: {
-        authorization: this._token,
-      },
+      headers: this._headers,
     }).then((res) => this._requestResult(res));
   }
 }

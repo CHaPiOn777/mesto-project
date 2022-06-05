@@ -5,7 +5,7 @@ import {
   PopupWithForm,
   PopupWithImage,
   Popup
-} from './urtils.js';
+} from './Utils.js';
 import {
   Card,
   getCards,
@@ -55,7 +55,7 @@ export const api = new Api({
 const initialData = [api.getUserInfo(), api.getInitialCards()];
 
 //загружает аватарку пользователя
-api.getAva()
+api.getUserInfo()
   .then((result) => {
     userInfo.setUserAvatar(result);
   })
@@ -63,7 +63,7 @@ api.getAva()
 
 //Создание карточки
 const createCard = (data) => {
-  const card = new Card(data, userId, popupImg, cardTemplate, handleCardClick);
+  const card = new Card(data, userId, popupImg, cardTemplate, handleCardClick, api);
   const createCard = card.generate();
   return createCard
 }
@@ -77,8 +77,10 @@ const downloadCard = new Section({
 //функция открывает попа с изображением
 function handleCardClick(name, link) {
   const img = new PopupWithImage('.card-img')
-  img.openPopup(name, link)
+  img.openPopup(name, link);
+  img.setEventListeners();
 }  
+
 
 //загружает данные о пользователе и карточки
 Promise.all(initialData)
@@ -89,7 +91,7 @@ Promise.all(initialData)
   })
   .catch(err => console.error(`Ошибка: ${err.status}`))
 
-const userInfo = new UserInfo(profileName, profileDescription, profileIcon);
+const userInfo = new UserInfo(profileName, profileDescription, profileIcon, userId);
 
 const editPopupValidation = new FormValidator(
   enableObjectValidation,
@@ -116,8 +118,7 @@ const newInfoProfile = new PopupWithForm('.popup__profile', {
     renderLoading(true, btnProfile);
     api.editProfile(data)
       .then(res => {
-        profileName.textContent = res.name;
-        profileDescription.textContent = res.about;
+        userInfo.setUserInfo(res)
         newInfoProfile.closePopup();
       })
       .catch(err => console.error(`Ошибка: ${err.status}`))
@@ -133,7 +134,7 @@ const newCard = new PopupWithForm('.popup__card', {
     api.addNewCard(data)
       .then(res => {
         const card = createCard(res);
-        new Section({}, '.cards').prependCard(card);
+        downloadCard.prependCard(card);
         newCard.closePopup();
       })
       .catch(err => console.error(`Ошибка: ${err.status}`))
@@ -150,7 +151,7 @@ const newProfileIcon = new PopupWithForm('.popup__profile-icon', {
     renderLoading(true, btnProfileIcon);
     api.editAvatar(data)
       .then(res => {
-        profileIcon.style.backgroundImage = `url(${res.avatar})`;
+        userInfo.setUserAvatar(res)
         newProfileIcon.closePopup();
       })
       .catch(err => console.error(`Ошибка: ${err.status}`))
@@ -163,20 +164,19 @@ newProfileIcon.setEventListeners();
 
 //открывает попап аватара 
 profileIcon.addEventListener('click', () => {
-  new PopupWithForm('.popup__profile-icon', {formSubmitCallback: () =>{}}).openPopup();
-  formProfileIcon.reset();
-  avatarEditPopopValidation._resetValidation(formProfileIcon);
+  newProfileIcon.openPopup();
+  avatarEditPopopValidation.resetValidation();
 })
 
 //открывает попап карточек
 popupCardButtonAdd.addEventListener('click', function () {
-  new PopupWithForm('.popup__card', {formSubmitCallback: () =>{}}).openPopup();
+  newCard.openPopup();
   formCard.reset();
-  editPopupValidation._resetValidation(formCard);
+  editPopupValidation.resetValidation();
 })
 //открывает попап профиля
 popupProfileButtonEdit.addEventListener('click', function () {
-  new PopupWithForm('.popup__profile', {formSubmitCallback: () =>{}}).openPopup();
+  newInfoProfile.openPopup();
   const data = userInfo.getUserInfo();
   inputProfileName.value = data.name;
   inputProfileSubtitle.value = data.job;
