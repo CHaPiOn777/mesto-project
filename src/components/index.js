@@ -5,7 +5,7 @@ import {
   PopupWithForm,
   PopupWithImage,
   Popup
-} from './Utils.js';
+} from './urtils.js';
 import {
   Card,
   getCards,

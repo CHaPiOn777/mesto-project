@@ -1,4 +1,4 @@
-//* Класс для взаимодействия с сервером
+//* Клfасс для взаимодействия с сервером
 export default class Api {
   constructor(data) {
     this._baseUrl = data.serverUrl;
