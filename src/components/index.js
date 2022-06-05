@@ -37,7 +37,7 @@ import {
   inputProfileName
 } from './Modal.js';
 import UserInfo from './UserInfo.js';
-import Api from './api.js';
+import Api from './Api.js';
 
 
 const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /*кнопка редкатирования профиля*/

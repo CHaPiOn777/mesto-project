@@ -1,6 +1,6 @@
 import {
   Api
-} from './api.js';
+} from './Api.js';
 import {api} from './index.js';
 export class Card {
   constructor(data, userId, popupImg, cardTemplate, handleCardClick) {
