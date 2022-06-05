@@ -5,11 +5,11 @@ import {
   PopupWithForm,
   PopupWithImage,
   Popup
-} from './utils.js';
+} from './Utils.js';
 import {
   Card,
   getCards,
-} from './card.js'
+} from './Card.js'
 import {
 
   popupCard,
@@ -17,17 +17,17 @@ import {
   cards,
   cardTemplate,
   popupImg
-} from './constants.js';
+} from './Constants.js';
 
 import {
   enableObjectValidation,
   FormValidator
-} from './validate.js';
+} from './FormValidator.js';
 
 
 import {
   Section
-} from './section.js';
+} from './Section.js';
 
 import {
   popupProfile,
@@ -35,8 +35,8 @@ import {
   profileDescription,
   inputProfileSubtitle,
   inputProfileName
-} from './modal.js';
-import UserInfo from './userInfo.js';
+} from './Modal.js';
+import UserInfo from './UserInfo.js';
 import Api from './api.js';
 
 

@@ -1,6 +1,6 @@
 import {
   Popup
-} from './utils.js';
+} from './Utils.js';
 
 
 export const popupProfile = document.querySelector('.popup__profile');/*блок формы редктирования карточки*/
