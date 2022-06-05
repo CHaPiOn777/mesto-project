@@ -27,7 +27,7 @@ export class FormValidator{
     }
   }
   _hasInvalidInput() {
-    // проходим по этому массиву методом some
+    // -проходим по этому массиву методом some
     return this._inputList.some((inputElement) => {
       // Если поле не валидно, колбэк вернёт true
       // Обход массива прекратится и вся функция

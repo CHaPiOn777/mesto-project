@@ -36,7 +36,7 @@ export default class Api {
       },
     }).then((res) => this._requestResult(res));
   }
-  //* Запрос изначальных карточек
+  //* - Запрос изначальных карточек
   getInitialCards() {
     return fetch(`${this._baseUrl}cards`, {
       method: "GET",

@@ -12,7 +12,7 @@ export class Card {
   }
 
 
-  //создание разметки карточки
+  // -создание разметки карточки
   generate() {
     this._element = this._getElement();
     this._cardImg = this._element.querySelector('.card__img');

@@ -40,7 +40,7 @@ import UserInfo from './UserInfo.js';
 import Api from './Api.js';
 
 
-const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /*кнопка редкатирования профиля*/
+const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /* _кнопка редкатирования профиля*/
 const popupCardButtonAdd = document.querySelector('.profile__add-button'); /*кнопка добавить попап карточки*/
 const profileIcon = document.querySelector('.profile__avatar');
 const popupProfileIcon = document.querySelector('.popup__profile-icon');

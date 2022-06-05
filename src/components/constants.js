@@ -1,4 +1,4 @@
-export const popupImg = document.querySelector('.card-img'); /*блок формы редктирования картинки*/
+export const popupImg = document.querySelector('.card-img'); /* -блок формы редктирования картинки*/
 export const cardTemplate = document.querySelector('#card-template').content;
 export const formCard = document.forms.popupCard; /*форма карточки*/
 export const inputCardName = formCard.elements.name;
