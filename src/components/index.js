@@ -14,9 +14,18 @@ import {
 } from './Card.js'
 
 import {
-  formCard,
+  popupImg,
   cardTemplate,
-  popupImg
+  formCard,
+  popupProfile,
+  profileName,
+  profileDescription,
+  inputProfileName,
+  inputProfileSubtitle,
+  popupProfileButtonEdit,
+  popupCardButtonAdd,
+  profileIcon,
+  formProfileIcon
 } from './Constants.js';
 
 import {
@@ -28,29 +37,14 @@ import {
   Section
 } from './Section.js';
 
-import {
-  popupProfile,
-  profileName,
-  profileDescription,
-  inputProfileSubtitle,
-  inputProfileName
-} from './Modal.js';
 import UserInfo from './UserInfo.js';
 import Api from './Api.js';
-
-
-const popupProfileButtonEdit = document.querySelector('.profile__edit-button'); /* _кнопка редкатирования профиля*/
-const popupCardButtonAdd = document.querySelector('.profile__add-button'); /*кнопка добавить попап карточки*/
-const profileIcon = document.querySelector('.profile__avatar');
-const popupProfileIcon = document.querySelector('.popup__profile-icon');
-const formProfileIcon = document.forms.popupProfileIcon;
-export let userId;
 
 export const api = new Api({
   serverUrl: "https://nomoreparties.co/v1/plus-cohort-9/",
   token: "4aa45065-cf66-4840-9e29-974284b6da3e",
 });
-
+let userId;
 const initialData = [api.getUserInfo(), api.getInitialCards()];
 
 export function renderLoading(isLoading, btn) {
