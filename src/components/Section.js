@@ -11,7 +11,6 @@ export class Section {
     })
   }
   prependCard(elem) {
-    console.log(this._container);
     this._container.prepend(elem)
   }
   addItems(elem) {

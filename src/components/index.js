@@ -1,20 +1,20 @@
 import '../style/index.css';
 import 'core-js/es/symbol';
+
+
 import {
-  renderLoading,
-  PopupWithForm,
-  PopupWithImage,
-  Popup
-} from './Utils.js';
+  PopupWithImage
+} from './PopupWithImage.js';
+import {
+  PopupWithForm
+} from './PopupWithForm.js';
+
 import {
   Card,
-  getCards,
 } from './Card.js'
-import {
 
-  popupCard,
+import {
   formCard,
-  cards,
   cardTemplate,
   popupImg
 } from './Constants.js';
@@ -23,7 +23,6 @@ import {
   enableObjectValidation,
   FormValidator
 } from './FormValidator.js';
-
 
 import {
   Section
@@ -54,18 +53,18 @@ export const api = new Api({
 
 const initialData = [api.getUserInfo(), api.getInitialCards()];
 
-//загружает аватарку пользователя
-api.getUserInfo()
-  .then((result) => {
-    userInfo.setUserAvatar(result);
-  })
-  .catch(err => console.error(`Ошибка: ${err.status}`));
-
+export function renderLoading(isLoading, btn) {
+  if(isLoading) {
+    btn.textContent = `${btn.id}...`
+  } else {
+    btn.textContent = `${btn.id}`
+  }
+}
 //Создание карточки
 const createCard = (data) => {
   const card = new Card(data, userId, popupImg, cardTemplate, handleCardClick, api);
   const createCard = card.generate();
-  return createCard
+  return createCard;
 }
 //Загрузка карточки
 const downloadCard = new Section({
@@ -76,9 +75,8 @@ const downloadCard = new Section({
 
 //функция открывает попа с изображением
 function handleCardClick(name, link) {
-  const img = new PopupWithImage('.card-img')
+  const img = new PopupWithImage('.card-img');
   img.openPopup(name, link);
-  img.setEventListeners();
 }  
 
 
@@ -151,7 +149,7 @@ const newProfileIcon = new PopupWithForm('.popup__profile-icon', {
     renderLoading(true, btnProfileIcon);
     api.editAvatar(data)
       .then(res => {
-        userInfo.setUserAvatar(res)
+        userInfo.setUserInfo(res)
         newProfileIcon.closePopup();
       })
       .catch(err => console.error(`Ошибка: ${err.status}`))
@@ -171,7 +169,6 @@ profileIcon.addEventListener('click', () => {
 //открывает попап карточек
 popupCardButtonAdd.addEventListener('click', function () {
   newCard.openPopup();
-  formCard.reset();
   editPopupValidation.resetValidation();
 })
 //открывает попап профиля
