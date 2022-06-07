@@ -36,6 +36,6 @@
   },
   "homepage": "https://github.com/CHaPiOn777/mesto-project#readme",
   "dependencies": {
-    "core-js": "^3.21.1"
+    "core-js": "^3.22.7"
   }
 }
