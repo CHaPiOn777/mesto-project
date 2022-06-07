@@ -67,10 +67,11 @@ const downloadCard = new Section({
     }
   }, '.cards') 
 
+const imagePopup = new PopupWithImage('.card-img');
+imagePopup.setEventListeners()
 //функция открывает попа с изображением
 function handleCardClick(name, link) {
-  const img = new PopupWithImage('.card-img');
-  img.openPopup(name, link);
+  imagePopup.openPopup(name, link);
 }  
 
 
